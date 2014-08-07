@@ -29,7 +29,7 @@ function pic_form_upload_success(data) {
                             <label for="j_form_text" class="control-label x85">文本框：</label>
                         </td>
                         <td>
-                            <input type="text" name="text" id="j_form_text" value="" class="form-control" size="30" placeholder="文本框">
+                            <input type="text" name="text" id="j_form_text" value="" class="form-control" size="20" placeholder="文本框">
                         </td>
                         <td>form-control</td>
                         <td></td>
@@ -39,7 +39,7 @@ function pic_form_upload_success(data) {
                             <label for="j_form_text2" class="control-label x85">只读文本框：</label>
                         </td>
                         <td>
-                            <input type="text" name="text" id="j_form_text2" value="" class="form-control" size="30" placeholder="只读文本框" readonly="readonly">
+                            <input type="text" name="text" id="j_form_text2" value="" class="form-control" size="20" placeholder="只读文本框" readonly="readonly">
                         </td>
                         <td>form-control</td>
                         <td>readonly="readonly"</td>
@@ -49,7 +49,7 @@ function pic_form_upload_success(data) {
                             <label for="j_form_text3" class="control-label x85">行内提示：</label>
                         </td>
                         <td>
-                            <input type="text" name="text" id="j_form_text3" value="" class="form-control" size="12" placeholder="后面带提示信息">
+                            <input type="text" name="text" id="j_form_text3" value="" class="form-control" size="15" placeholder="后面带提示信息">
                             <div class="alert alert-warning form-inline"><i class="fa fa-warning"></i> 我是提示信息</div>
                         </td>
                         <td>alert alert-warning form-inline</td>
@@ -62,7 +62,7 @@ function pic_form_upload_success(data) {
                             <label for="j_form_text4" class="control-label x85">换行提示：</label>
                         </td>
                         <td>
-                            <input type="text" name="text" id="j_form_text4" value="" class="form-control" size="12" placeholder="下面带提示信息">
+                            <input type="text" name="text" id="j_form_text4" value="" class="form-control" size="15" placeholder="下面带提示信息">
                             <div class="alert alert-danger form-block"><i class="fa fa-times-circle"></i> 我是换行提示信息</div>
                         </td>
                         <td>alert alert-danger form-block</td>
@@ -175,7 +175,7 @@ $('checkbox').on('ifChecked', function(event){
                             <label for="j_form_date" class="control-label x85">日期输入框：</label>
                         </td>
                         <td>
-                            <input type="text" name="date" id="j_form_date" value="2015-05-01" class="form-control date" size="30" readonly="readonly">
+                            <input type="text" name="date" id="j_form_date" value="2015-05-01" class="form-control date" size="20" readonly="readonly">
                         </td>
                         <td>form-control date</td>
                         <td></td>
@@ -185,7 +185,7 @@ $('checkbox').on('ifChecked', function(event){
                             <label for="j_form_datetime" class="control-label x85">日期时间：</label>
                         </td>
                         <td>
-                            <input type="text" name="datetime" id="j_form_datetime" value="2018-08-01 10:00:00" class="form-control date" size="30" datefmt="yyyy-MM-dd HH:mm:ss" readonly="readonly">
+                            <input type="text" name="datetime" id="j_form_datetime" value="2018-08-01 10:00:00" class="form-control date" size="20" datefmt="yyyy-MM-dd HH:mm:ss" readonly="readonly">
                         </td>
                         <td>form-control date</td>
                         <td>datefmt="yyyy-MM-dd HH:mm:ss"</td>
@@ -196,7 +196,7 @@ $('checkbox').on('ifChecked', function(event){
                         </td>
                         <td>
                             <div class="tags-control" data-url="php/get-project-list.php" data-parameterName="tagname" data-clearNotFound="false" errTop="-2">
-                                <input type="text" class="tag-input" placeholder="输入标签，回车提交" />
+                                <input type="text" class="tag-input" size="20" placeholder="输入标签，回车提交" />
                             </div>
                         </td>
                         <td>tags-control</td>
@@ -209,7 +209,7 @@ $('checkbox').on('ifChecked', function(event){
                             <label for="" class="control-label x85">查找带回：</label>
                         </td>
                         <td>
-                            <input type="text" name="test.profession" class="form-control" placeholder="点后边的按钮查找" />
+                            <input type="text" name="test.profession" class="form-control" size="20" placeholder="点后边的按钮查找" />
                             <a href="table-edit-lookup.html" lookupgroup="test" title="查找带回"><i class="fa fa-search"></i></a>
                         </td>
                         <td></td>

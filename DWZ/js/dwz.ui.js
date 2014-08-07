@@ -320,6 +320,18 @@ function initUI(_box){
     //textarea autoheight
     $('textarea.autosize', $p).autosize();
     
+    //根据input[text|password]、textarea的size或cols属性固定宽度(以适应不同浏览器)
+    $(':text, :password, textarea', $p).each(function() {
+    	var $this = $(this);
+    	var $itemDetail = $this.closest('table.itemDetail');
+    	if (!$itemDetail.length) {
+	    	var size = $this.attr('size') || $this.attr('cols');
+	    	if (!size) return;
+	    	var width = size * 10;
+	    	if (width) $this.css('width', width);
+    	}
+    });
+    
     //validate form
     $("form.form-validate", $p).each(function() {
         var $this       = $(this);

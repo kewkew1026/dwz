@@ -117,7 +117,7 @@
 		<a class="last" href="javascript:;">末页 <i class="fa fa-step-forward"></i></a>
 		<span class="last">末页 <i class="fa fa-step-forward"></i></span>
 	</li>
-	<li class="jumpto"><span class="p-input"><input class="form-control input-sm-pages" type="text" size="4" value="#currentPage#" /></span><a class="goto" href="javascript:;"><i class="fa fa-chevron-right"></i></a></li>
+	<li class="jumpto"><span class="p-input"><input class="form-control input-sm-pages" type="text" size="2.3" value="#currentPage#" title="跳转页码"></span><a class="goto" href="javascript:;" title="跳转"><i class="fa fa-chevron-right"></i></a></li>
 </ul>
 ]]></_PAGE_>
 
