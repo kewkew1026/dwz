@@ -114,7 +114,7 @@
             inputStr += ' accept="';
             inputStr += getAcceptString(option.fileTypeExts);
             inputStr += '"/>';
-            inputStr += '<a id="'+ pId +'_fileuploadbtn" href="javascript:void(0)" class="btn btn-default btn-sm uploadify-button">';
+            inputStr += '<a id="'+ pId +'_fileuploadbtn" href="javascript:void(0)" class="btn btn-default btn-sm Huploadify-button">';
             inputStr += option.buttonText;
             inputStr += "</a>";
             //inputStr += '<div class="upload_droparea">拖动文件到此处</div>'
@@ -423,7 +423,7 @@
                         });
                     }
                     //点击上传按钮时触发file的click事件
-                    _this.find(".uploadify-button").on("click", function() {
+                    _this.find(".Huploadify-button").on("click", function() {
                         _this.find(".selectbtn").trigger("click");
                     });
                     option.onInit && option.onInit();
@@ -471,12 +471,12 @@
             },
             disable:function(instanceID) {
                 var parent = instanceID ? $("file_upload_" + instanceID + "-button") :$("body");
-                parent.find(".uploadify-button").css("background-color", "#888").off("click");
+                parent.find(".Huploadify-button").prop("disabled", true).off("click");
             },
             ennable:function(instanceID) {
                 //点击上传按钮时触发file的click事件
                 var parent = instanceID ? $("file_upload_" + instanceID + "-button") :$("body");
-                parent.find(".uploadify-button").css("background-color", "#707070").on("click", function() {
+                parent.find(".Huploadify-button").prop("disabled", false).on("click", function() {
                     parent.find(".selectbtn").trigger("click");
                 });
             }
