@@ -558,61 +558,58 @@ function initUI(_box){
             //添加、删除按钮
             function _addHoverDom(treeId, treeNode) {
                 var level = treeNode.level;
-                var aObj = $("#"+ treeNode.tId + IDMark_A);
+                var $obj = $("#"+ treeNode.tId + IDMark_A);
                 var $add = $("#diyBtn_add_"+ treeNode.id);
                 var $del = $("#diyBtn_del_"+ treeNode.id);
-                if ($add.length || $del.length) {
-                    $add.length && $add.show();
-                    $del.length && $del.show();
-                    return;
+                if (!$add.length) {
+	                if (level < maxAddLevel) {
+	                    $edit = $('<a href="javascript:;" class="tree_add" id="diyBtn_add_'+ treeNode.id +'" title="添加"><i class="fa fa-plus"></i></a>');
+	                    $edit.appendTo($obj);
+		                $edit.on("click", function(){
+		                    zTree.addNodes(treeNode, {name:"新增Item"});
+		                });
+	                }
                 }
-                var editStr = '';
-                if (level < maxAddLevel) {
-                    editStr += '<a href="javascript:;" class="tree_add" id="diyBtn_add_'+ treeNode.id +'" title="添加"><i class="fa fa-plus"></i></a>';
+                if (!$del.length) {
+                	var $del = $('<a href="javascript:;" class="tree_del" id="diyBtn_del_'+ treeNode.id +'" title="删除"><i class="fa fa-times"></i></a>');
+                	$del.appendTo($obj);
+	                $del.on("click", function(event) {
+	                    var delFn = function() {
+	                        alertMsg.confirm('确认要删除 '+ treeNode.name +' 吗？', {
+	                            okCall: function() {
+	                                zTree.removeNode(treeNode);
+	                                if (onRemove) {
+	                                    var fn = str2Func(onRemove);
+	                                    if (fn)
+	                                        fn.call(fn, event, treeId, treeNode);
+	                                }
+	                            },
+	                            cancelCall: function () {
+	                                return;
+	                            }
+	                        });
+	                    };
+	                    if (beforeRemove) {
+	                        var fn = str2Func(beforeRemove);
+	                        if (fn) {
+	                            var isdel = fn.call(fn, treeId, treeNode);
+	                            if (isdel && isdel == true) delFn();
+	                        }
+	                    } else {
+	                        delFn();
+	                    }
+	                });
                 }
-                editStr += '<a href="javascript:;" class="tree_del" id="diyBtn_del_'+ treeNode.id +'" title="删除"><i class="fa fa-times"></i></a>';
-                aObj.append(editStr);
-                var btnAdd = $("#diyBtn_add_"+ treeNode.id);
-                if (btnAdd) btnAdd.bind("click", function(){
-                    zTree.addNodes(treeNode, {name:"新增Item"});
-                });
-                var btnDel = $("#diyBtn_del_"+ treeNode.id);
-                if (btnDel) btnDel.bind("click", function(event) {
-                    var delFn = function() {
-                        alertMsg.confirm('确认要删除 '+ treeNode.name +' 吗？', {
-                            okCall: function() {
-                                zTree.removeNode(treeNode);
-                                if (onRemove) {
-                                    var fn = str2Func(onRemove);
-                                    if (fn)
-                                        fn.call(fn, event, treeId, treeNode);
-                                }
-                            },
-                            cancelCall: function () {
-                                return;
-                            }
-                        });
-                    };
-                    if (beforeRemove) {
-                        var fn = str2Func(beforeRemove);
-                        if (fn) {
-                            var isdel = fn.call(fn, treeId, treeNode);
-                            if (isdel && isdel == true) delFn();
-                        }
-                    } else {
-                        delFn();
-                    }
-                });
             }
             //移除添加删除按钮
             function _removeHoverDom(treeId, treeNode) {
                 var $add = $("#diyBtn_add_"+ treeNode.id);
                 var $del = $("#diyBtn_del_"+ treeNode.id);
                 if ($add && $add.length) {
-                    $add.hide();
+                    $add.off('click').remove();
                 }
                 if ($del && $del.length) {
-                    $del.hide();
+                    $del.off('click').remove();
                 }
             }
             //拖拽
