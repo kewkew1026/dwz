@@ -27,8 +27,7 @@ function custom_autodate(o, date) {
 }
 //上传图片完成回调
 function custom_pic_upload_success(data, o) {
-    var json = data;
-    if (typeof json != 'object') json = $.parseJSON(data);
+    var json = $.parseJSON(data);
     DWZ.ajaxDone(json);
     if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok) {
         var pic    = json.navTabId,
