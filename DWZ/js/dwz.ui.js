@@ -116,7 +116,7 @@ function initUI(_box){
                 height: 26,
                 onUploadError: uploadifyError,
                 /*以下仅Huploadify适用*/
-                breakPoints:true,
+                breakPoints:false, //断点续传
                 saveInfoLocal:true,
                 previewImg:true,//预览上传图片
                 previewLoadimg:'DWZ/Huploadify/images/loading.gif', //预览前的载入图标
