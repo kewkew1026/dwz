@@ -386,7 +386,7 @@
                                         }
                                     //}
                                     if (fileObj.uploadOver) {
-                                        option.onUploadSuccess && option.onUploadSuccess.call(_this, originalFile, returnData);
+                                        option.onUploadSuccess && option.onUploadSuccess.call(_this, originalFile, xhr.responseText);
                                         //在指定的间隔时间后删掉进度条
                                         setTimeout(function() {
                                             _this.find("#"+ pId +"_fileuploadfile_"+ originalFile.index).fadeOut('normal', function() {
@@ -397,10 +397,10 @@
                                         
                                     }
                                 } else {
-                                    fileObj.uploadOver && option.onUploadError && option.onUploadError(originalFile, returnData);
+                                    fileObj.uploadOver && option.onUploadError && option.onUploadError(originalFile, xhr.responseText);
                                 }
                                 if (fileObj.uploadOver) {
-                                    option.onUploadComplete && option.onUploadComplete(originalFile, returnData);
+                                    option.onUploadComplete && option.onUploadComplete(originalFile, xhr.responseText);
                                     //清除文件选择框中的已有值
                                     fileObj.fileInput.val("");
                                 }
