@@ -7,28 +7,31 @@
 <!-- bootstrap - css -->
 <link href="DWZ/themes/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 <!-- uploadify -->
-<link href="DWZ/uploadify/css/uploadify.css" rel="stylesheet" media="screen"/>
+<link href="DWZ/plugs/uploadify/css/uploadify.css" rel="stylesheet" media="screen"/>
+<link href="DWZ/plugs/Huploadify/Huploadify.css" rel="stylesheet" media="screen"/>
 <!-- core - css -->
 <link href="DWZ/themes/css/style.css" rel="stylesheet" media="screen"/>
 <link href="DWZ/themes/purple/core.css" rel="stylesheet" media="screen"/>
 <!-- plug - css -->
-<link href="DWZ/kindeditor_4.1.10/themes/default/default.css" rel="stylesheet" media="screen" />
+<link href="DWZ/plugs/kindeditor_4.1.10/themes/default/default.css" rel="stylesheet" media="screen" />
 <link href="DWZ/plugs/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet" media="screen" />
-<link href="DWZ/themes/css/validationEngine.jquery.css" rel="stylesheet" media="screen" />
-<link href="DWZ/themes/css/bootstrap-select.css" rel="stylesheet" media="screen" />
+<link href="DWZ/plugs/validationEngine/validationEngine.jquery.css" rel="stylesheet" media="screen" />
+<link href="DWZ/plugs/bootstrapSelect/bootstrap-select.css" rel="stylesheet" media="screen" />
 <link href="DWZ/themes/css/FA/css/font-awesome.min.css" rel="stylesheet" media="screen" />
-<link href="DWZ/themes/css/print.css" rel="stylesheet" media="print" />
 <!--[if lte IE 7]>
 <link href="DWZ/themes/css/ie7.css" rel="stylesheet" />
 <![endif]-->
 <!--[if lte IE 9]>
 <script src="DWZ/js/speedup.js"></script>
-<script src="DWZ/plugs/respond.js"></script>
+<script src="DWZ/plugs/other/respond.js"></script>
 <![endif]-->
 <!-- jquery -->
 <script src="DWZ/js/jquery-1.7.2.min.js"></script>
 <script src="DWZ/js/jquery.cookie.js"></script>
-<!-- DWZ -->
+<!-- DWZ.min 分模块压缩版 -->
+<script src="DWZ/js/dwz.min.js"></script>
+<!-- 以下是DWZ的分模块未压缩版，建议开发调试阶段使用下面的版本 -->
+<!--
 <script src="DWZ/js/dwz.core.js"></script>
 <script src="DWZ/js/dwz.util.date.js"></script>
 <script src="DWZ/js/dwz.drag.js"></script>
@@ -50,37 +53,37 @@
 <script src="DWZ/js/dwz.datepicker.js"></script>
 <script src="DWZ/js/dwz.effects.js"></script>
 <script src="DWZ/js/dwz.history.js"></script>
-<script src="DWZ/js/dwz.print.js"></script>
+-->
 <!-- plugs -->
 <!-- uploadify -->
-<script src="DWZ/uploadify/scripts/jquery.uploadify.min.js"></script>
+<script src="DWZ/plugs/uploadify/scripts/jquery.uploadify.min.js"></script>
+<!-- html5 uploadify -->
+<script src="DWZ/plugs/Huploadify/jquery.Huploadify.min.js"></script>
 <!-- kindeditor -->
-<script charset="utf-8" src="DWZ/kindeditor_4.1.10/kindeditor-all.min.js"></script>
-<script charset="utf-8" src="DWZ/kindeditor_4.1.10/lang/zh_CN.js"></script>
+<script src="DWZ/plugs/kindeditor_4.1.10/kindeditor-all.min.js"></script>
+<script src="DWZ/plugs/kindeditor_4.1.10/lang/zh_CN.js"></script>
 <!-- colorpicker -->
 <script src="DWZ/plugs/colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- ztree -->
-<script src="DWZ/plugs/jquery.ztree.core-3.5.min.js"></script>
-<script src="DWZ/plugs/jquery.ztree.excheck-3.5.min.js"></script>
-<script src="DWZ/plugs/jquery.ztree.exedit-3.5.min.js"></script>
-<!--
-<script src="DWZ/plugs/jquery.ztree.exhide-3.5.min.js"></script>
--->
+<script src="DWZ/plugs/ztree/jquery.ztree.core-3.5.min.js"></script>
+<script src="DWZ/plugs/ztree/jquery.ztree.excheck-3.5.min.js"></script>
+<script src="DWZ/plugs/ztree/jquery.ztree.exedit-3.5.min.js"></script>
+<script src="DWZ/plugs/ztree/jquery.ztree.exhide-3.5.min.js"></script>
 <!-- form validate -->
-<script src="DWZ/plugs/jquery.validationEngine-zh_CN.js"></script>
-<script src="DWZ/plugs/jquery.validationEngine.min.js"></script>
-<!-- 时钟 -->
+<script src="DWZ/plugs/validationEngine/jquery.validationEngine-zh_CN.js"></script>
+<script src="DWZ/plugs/validationEngine/jquery.validationEngine.min.js"></script>
+<!-- bootstrap plugs -->
+<script src="DWZ/plugs/bootstrap.min.js"></script>
+<script src="DWZ/plugs/bootstrapSelect/bootstrap-select.min.js"></script>
+<script src="DWZ/plugs/bootstrapTags/bootstrap-tags.min.js"></script>
+<!-- icheck -->
+<script src="DWZ/plugs/icheck/icheck.min.js"></script>
+<!-- dragsort -->
+<script src="DWZ/plugs/dragsort/jquery.dragsort-0.5.1.min.js"></script>
+<!-- clock -->
 <script src="DWZ/plugs/clock/jqClock.min.js"></script>
 <!-- other plugs -->
-<script src="DWZ/plugs/bootstrap.min.js"></script>
-<script src="DWZ/plugs/bootstrap-select.min.js"></script>
-<script src="DWZ/plugs/icheck.min.js"></script>
-<script src="DWZ/plugs/bootstrap-tags.min.js"></script>
-<script src="DWZ/plugs/jquery.autosize.js"></script>
-<script src="DWZ/plugs/jquery.dragsort-0.5.1.min.js"></script>
-<!-- html5 uploadify -->
-<link href="DWZ/Huploadify/Huploadify.css" rel="stylesheet" media="screen"/>
-<script src="DWZ/Huploadify/jquery.Huploadify.js"></script>
+<script src="DWZ/plugs/other/jquery.autosize.js"></script>
 <!-- init -->
 <script type="text/javascript">
 $(function(){
