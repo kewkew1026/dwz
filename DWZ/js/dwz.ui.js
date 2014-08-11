@@ -166,12 +166,13 @@ function initUI(_box){
             var fresh = eval($this.attr("fresh") || "true");
             var external = eval($this.attr("external") || "false");
             var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
+            var reloadtips = $this.attr('reloadtips'); //K'naan@2014-08-11
             DWZ.debug(url);
             if (!url.isFinishedTm()) {
                 alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
                 return false;
             }
-            navTab.openTab(tabid, url,{title:title, fresh:fresh, external:external});
+            navTab.openTab(tabid, url,{title:title, fresh:fresh, external:external, reloadtips:reloadtips});
             event.preventDefault();
         });
     });

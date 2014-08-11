@@ -366,17 +366,27 @@ var navTab = {
 			$tab.find(">a").attr("title", op.title).find(span$).html(op.title);
 			var $panel = this._getPanels().eq(iOpenIndex);
 			if(op.fresh || $tab.attr("url") != url) {
-				$tab.attr("url", url);
-				if (op.external || url.isExternalUrl()) {
-					$tab.addClass("external");
-					navTab.openExternal(url, $panel);
-				} else {
-					$tab.removeClass("external");
-					$panel.ajaxUrl({
-						type:"GET", url:url, data:op.data, callback:function(){
-							navTab._loadUrlCallback($panel);
-						}
+				var _reloadTab = function() {
+					$tab.attr("url", url);
+					if (op.external || url.isExternalUrl()) {
+						$tab.addClass("external");
+						navTab.openExternal(url, $panel);
+					} else {
+						$tab.removeClass("external");
+						$panel.ajaxUrl({
+							type:"GET", url:url, data:op.data, callback:function(){
+								navTab._loadUrlCallback($panel);
+							}
+						});
+					}
+				};
+				//K'naan@2014-08-11 打开重复navTab时的确认提示信息[适用于navTab编辑页等]
+				if (op.reloadtips) {
+					alertMsg.confirm(op.reloadtips, {
+						okCall: _reloadTab
 					});
+				} else {
+					_reloadTab();
 				}
 			}
 			this._currentIndex = iOpenIndex;
