@@ -1,5 +1,5 @@
 <div class="pageHeader">
-    <form id="pagerForm" onsubmit="return dialogSearch(this);" action="table-edit-lookup.html" method="post">
+    <form id="pagerForm" onsubmit="return dialogSearch(this);" action="table-grid.html" method="post">
         <input type="hidden" name="pageNum" value="1" />
         <input type="hidden" name="numPerPage" value="${model.numPerPage}" />
         <input type="hidden" name="orderField" value="${param.orderField}" />
@@ -7,9 +7,9 @@
             <ul class="searchContent">
                 <li><label>名称：</label><input type="text" value="" name="code" class="form-control" size="10" /></li>
                 <li><button type="submit" class="btn btn-default btn-sm">查询</button></li>
-                <li><a class="btn btn-orange btn-sm" href="javascript:navTab.reload('', {reload:true});">清空查询</a></li>
+                <li><a class="btn btn-orange btn-sm" href="javascript:$.pdialog.refresh({});">清空查询</a></li>
                 <li class="pull-right">
-                    <button type="button" class="btn btn-default btn-sm" multlookup="ids" warn="请至少选择一项职业">选择选中</button>
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" multlookup="ids" warn="请至少选择一项职业">选择选中</button>
                 </li>
             </ul>
         </div>
