@@ -643,10 +643,18 @@ function initUI(_box){
     //bootstrap - select && 联动
     $('select.selectpicker', $p).selectpicker();
     $('select.selectpicker', $p).change(function() {
-        var $this      = $(this);
-        var nextselect = $this.data('nextselect');
-        var refurl     = $this.data('refurl');
-        if ($(nextselect).length && refurl) {
+        var $this       = $(this);
+        var $nextselect = $($this.data('nextselect'));
+        var refurl      = $this.data('refurl');
+        var _setEmpty   = function($select) {
+        	var $_nextselect = $($select.data('nextselect'));
+            if ($_nextselect && $_nextselect.length) {
+                var emptytxt = $_nextselect.data('emptytxt') || '&nbsp;';
+                $_nextselect.html('<option>'+ emptytxt +'</option>').selectpicker('refresh');
+                _setEmpty($_nextselect);
+            }
+        };
+        if (($nextselect && $nextselect.length) && refurl) {
             $.ajax({
                 type     : 'POST', 
                 dataType : "json", 
@@ -662,15 +670,11 @@ function initUI(_box){
                         }
                     });
                     if (!html) {
-                        html = $(_nextselect).data('emptytxt') || '&nbsp;';
-                        html = '<option>'+ html +'</option>'
-                    }
-                    $(nextselect).html(html).selectpicker('refresh');
-                    var _nextselect = $(nextselect).data('nextselect');
-                    if (_nextselect && $(_nextselect).length) {
-                        var emptytxt = $(_nextselect).data('emptytxt') || '&nbsp;';
-                        $(_nextselect).html('<option>'+ emptytxt +'</option>').selectpicker('refresh');
-                    }
+                        html = $nextselect.data('emptytxt') || '&nbsp;';
+                        html = '<option>'+ html +'</option>';
+                	}
+                    $nextselect.html(html).selectpicker('refresh');
+                    _setEmpty($nextselect);
                 },
                 error   : DWZ.ajaxError
             });
