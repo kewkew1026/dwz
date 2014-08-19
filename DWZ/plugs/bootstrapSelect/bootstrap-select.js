@@ -821,6 +821,10 @@
         destroy: function() {
             this.$newElement.remove();
             this.$element.remove();
+        },
+        /*自定义：销毁菜单*/
+        destroyMenu: function() {
+            this.$menu.parents('.bootstrap-select').remove();
         }
     };
 
