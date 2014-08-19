@@ -11,6 +11,8 @@ var navTab = {
 	_moreBut:null,
 	_moreBox:null,
 	_currentIndex: 0,
+	_eventNames:[], //K'naan@2014-08-19 添加 自定义注册事件
+	_events:[], //K'naan@2014-08-19 添加 自定义注册事件
 	
 	_op: {id:"navTab", stTabBox:".navTab-tab", stPanelBox:".navTab-panel", mainTabId:"main", close$:"span.close", prevClass:"tabsLeft", nextClass:"tabsRight", stMore:".tabsMore", stMoreLi:"ul.tabsMoreList"},
 	
@@ -40,16 +42,30 @@ var navTab = {
 		
 		this._init();
 		this._ctrlScrollBut();
+		/*K'naan@2014-08-19 注册自定义事件*/
+		if (options && options.registerEvents) {
+		    this._registerEvents = options.registerEvents;
+		}
+		 
 	},
 	_init: function(){
 		var $this = this;
 		this._getTabs().each(function(iTabIndex){
+		    var $tab = $(this);
 			$(this).unbind("click").click(function(event){
 				$this._switchTab(iTabIndex);
 			});
 			$(this).find(navTab._op.close$).unbind("click").click(function(){
 				$this._closeTab(iTabIndex);
 			});
+			//
+			if ($this._registerEvents) {
+			    $.each($this._registerEvents, function(i, n) {
+			        //if ($tab.isBind())
+			        console.log('name:'+ i +'-val:'+ n);
+			        //if ($tab.isBind())
+			    });
+			}
 		});
 		this._getMoreLi().each(function(iTabIndex){
 			$(this).find(">a").unbind("click").click(function(event){
@@ -280,6 +296,9 @@ var navTab = {
 			$tab.data("reloadFlag", null);
 			var $panel = this.getPanel($tab.attr("tabid"));
 			
+			/*K'naan@2014-08-18 添加：重载navTab时销毁bootstrap-select菜单,避免反复生成[主要针对selectpicker的data-container="body"的情况]*/
+            $panel.find('select.selectpicker').selectpicker('destroy');
+			
 			if ($tab.hasClass("external")){
 				navTab.openExternal(url, $panel);
 			}else {
@@ -400,6 +419,15 @@ var navTab = {
 			var $tab = $tabs.filter(":last");
 			var $panel = this._getPanels().filter(":last");
 			
+			var $this = this;
+	        /*K'naan@2014-08-19 为Panel注册自定义事件*/
+	        if ($this._eventNames) {
+	            $.each($this._eventNames, function(i, n) {
+	                $panel.on(n, $this._events[i]);
+	            });
+	        }
+	        /*End*/
+			
 			if (op.external || url.isExternalUrl()) {
 				$tab.addClass("external");
 				navTab.openExternal(url, $panel);
@@ -429,5 +457,15 @@ var navTab = {
 		this._scrollCurrent();
 		
 		this._getTabs().eq(this._currentIndex).attr("url", url);
+	},
+	/* K'naan@2014-08-19 添加：为navTab注册自定义事件 */
+	registerEvent: function(eventName, event) {
+	    if ($.isFunction(event)) {
+    	    if ($.inArray(eventName, this._eventNames) == -1) {
+    	        this._eventNames.push(eventName);
+    	        this._events.push(event);
+    	    }
+	    }
 	}
+	
 };

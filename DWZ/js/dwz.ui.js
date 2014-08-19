@@ -30,6 +30,19 @@ function initEnv() {
     
     if ($.taskBar) $.taskBar.init();
     navTab.init();
+    //K'naan@2014-08-19 为navTab注册自定义事件[销毁bootstrap-select菜单,避免反复生成[主要针对selectpicker的data-container="body"的情况]]
+    navTab.registerEvent('beforeLoad.b-jui', function(e, $panel) {
+        if ($panel.html()) {
+            $panel.find('select.selectpicker').selectpicker('destroyMenu');
+        }
+    });
+    //K'naan@2014-08-19 为dialog注册自定义事件
+    $.pdialog.registerEvent('beforeLoad.b-jui', function(e, $dialog){
+        if ($dialog.html()) {
+            $dialog.find('select.selectpicker').selectpicker('destroyMenu');
+        }
+    });
+    
     if ($.fn.switchEnv) $("#switchEnvBox").switchEnv();
     if ($.fn.navMenu) $("#navMenu").navMenu();
         
@@ -56,7 +69,7 @@ function initLayout(){
 
 function initUI(_box){
     var $p = $(_box || document);
-
+    
     //tables
     $("table.j-table", $p).jTable();
     

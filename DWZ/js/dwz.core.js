@@ -14,7 +14,8 @@ var DWZ = {
 	},
 	eventType: {
 		pageClear:"pageClear",	// 用于重新ajaxLoad、关闭nabTab, 关闭dialog时，去除xheditor等需要特殊处理的资源
-		resizeGrid:"resizeGrid"	// 用于窗口或dialog大小调整
+		resizeGrid:"resizeGrid",	// 用于窗口或dialog大小调整
+		beforeLoad:'beforeLoad.b-jui' //K'naan@2014-08-18 添加销毁bootstrap-select菜单,避免反复生成[主要针对selectpicker的data-container="body"的情况]
 	},
 	isOverAxis: function(x, reference, size) {
 		//Determines when x coordinate is over "b" element axis
@@ -193,6 +194,13 @@ var DWZ = {
 					if (json[DWZ.keys.statusCode]==DWZ.statusCode.error){
 						if (json[DWZ.keys.message]) alertMsg.error(json[DWZ.keys.message]);
 					} else {
+					    /*K'naan @ 2014-08-19 新增ajaxLoad前置事件*/
+					    var beforeLoad = $.Event(DWZ.eventType.beforeLoad);
+					    if (beforeLoad) {
+					        $this.trigger(beforeLoad, [$this]);
+					        //console.log($this.html());
+					    }
+					    /*End*/
 						$this.html(response).initUI();
 						if ($.isFunction(op.callback)) op.callback(response);
 					}

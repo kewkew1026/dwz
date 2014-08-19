@@ -10,66 +10,55 @@
 		getCurrent:function(){
 			return this._current;
 		},
-		/*K'naan@2014-04-25 添加：刷新一个dialog, 默认为原来的url*/
-		refresh:function(options) {
-			var op = $.extend({data:{}, dialogId:'', callback:null}, options);
-			var dialog = (op.dialogId && $('body').data(op.dialogId)) || this._current;
-			if (dialog) {
-				var url = $(dialog).data('url');
-				var jDContent = dialog.find('.dialogContent');
-				jDContent.ajaxUrl({
-					type:'POST', url:url, data:op.data, callback:function(response){
-						jDContent.find('[layoutH]').layoutH(jDContent);
-						$('.pageContent', dialog).width($(dialog).width()-14);
-						$(':button.btn-close', dialog).click(function(){
-							$.pdialog.close(dialog);
-							return false;
-						});
-						if ($.isFunction(op.callback)) op.callback(response);
-					}
-				});
-			}
+		_eventNames:[], //K'naan@2014-08-19 添加 自定义注册事件名称
+	    _events:[], //K'naan@2014-08-19 添加 自定义注册事件方法
+		/*K'naan@2014-08-19 修改：整合刷新和重载入dialog*/
+		refresh:function(dialogId) {
+		    if (!dialogId) {
+		        this._reload(this._current, {data:{}});
+		    } else {
+		        var dialog = (op.dialogId && $('body').data(op.dialogId)) || this._current;
+		        if (dialog) 
+		            this._reload(dialog, {data:{}});
+		    }
 		},
-		reload:function(url, options){
-			var op = $.extend({data:{}, dialogId:'', callback:null}, options);
-			var dialog = (op.dialogId && $('body').data(op.dialogId)) || this._current;
-			if (dialog){
-				var jDContent = dialog.find('.dialogContent');
-				jDContent.ajaxUrl({
-					type:'POST', url:url, data:op.data, callback:function(response){
-						jDContent.find('[layoutH]').layoutH(jDContent);
-						$('.pageContent', dialog).width($(dialog).width()-14);
-						$(':button.btn-close', dialog).click(function(){
-							$.pdialog.close(dialog);
-							return false;
-						});
-						if ($.isFunction(op.callback)) op.callback(response);
-					}
-				});
-			}
+		reload:function(url, options) {
+		    var op = $.extend({data:{}, dialogId:'', callback:null}, options);
+		    var dialog = (op.dialogId && $('body').data(op.dialogId)) || this._current;
+		    if (dialog) {
+		        dialog.data('url', url);
+		        this._reload(dialog, op);
+		    }
+		},
+		_reload:function(dialog, options) {
+		    var url = dialog.data('url');
+            var jDContent = dialog.find('.dialogContent');
+            jDContent.ajaxUrl({
+                type:'POST', url:url, data:options.data, callback:function(response) {
+                    jDContent.find('[layoutH]').layoutH(jDContent);
+                    $('.pageContent', dialog).width(dialog.width() - 14);
+                    $(':button.btn-close', dialog).click(function(){
+                        $.pdialog.close(dialog);
+                        return false;
+                    });
+                    if (options.callback && $.isFunction(options.callback)) options.callback(response);
+                }
+            });
 		},
 		//打开一个层
 		open:function(url, dlgid, title, options) {
 			var op = $.extend({},$.pdialog._op, options);
 			var dialog = $('body').data(dlgid);
 			//重复打开一个层
-			if(dialog) {
-				if(dialog.is(':hidden')) {
+			if (dialog) {
+				if (dialog.is(':hidden')) {
 					dialog.show();
 				}
-				if(op.fresh || url != $(dialog).data('url')){
+				if (op.fresh || url != dialog.data('url')) {
 					dialog.data('url',url);
 					dialog.find('.dialogHeader').find('h1').html('<i class="fa fa-caret-square-o-down"></i> '+ title);
 					this.switchDialog(dialog);
-					var jDContent = dialog.find('.dialogContent');
-					jDContent.loadUrl(url, {}, function(){
-						jDContent.find('[layoutH]').layoutH(jDContent);
-						$('.pageContent', dialog).width($(dialog).width()-10);
-						$('button.btn-close', dialog).click(function(){
-							$.pdialog.close(dialog);
-							return false;
-						});
-					});
+					this._reload(dialog, options);
 				}
 			} else { //打开一个全新的层
 				$('body').append(DWZ.frag['dialogFrag']);
@@ -79,15 +68,22 @@
 				dialog.data('url',url);
 				if(options.close) dialog.data('close',options.close);
 				if(options.param) dialog.data('param',options.param);
-				//($.fn.bgiframe && dialog.bgiframe());
 				
 				dialog.find('.dialogHeader').find('h1').html('<i class="fa fa-caret-square-o-down"></i> '+ title);
-				$(dialog).css('zIndex', ($.pdialog._zIndex += 2));
-				//$('div.shadow').css('zIndex', $.pdialog._zIndex - 3).show();
+				dialog.css('zIndex', ($.pdialog._zIndex += 2));
 				$.pdialog._init(dialog, options);
-				$(dialog).click(function(){
+				dialog.click(function(){
 					$.pdialog.switchDialog(dialog);
 				});
+				
+	            /*K'naan@2014-08-19 为Panel注册自定义事件*/
+	            if (this._eventNames) {
+	                var $this = this;
+	                $.each(this._eventNames, function(i,n) {
+	                    dialog.on(n, ($this._events)[i]);
+	                });
+	            }
+	            /*End*/
 				
 				if(op.resizable)
 					dialog.jresize();
@@ -130,7 +126,6 @@
 						$('a.restore',dialog).trigger('click');
 				});
 				if(op.max) {
-//					$.pdialog.switchDialog(dialog);
 					$.pdialog.maxsize(dialog);
 					dialog.jresize('destroy').dialogDrag('destroy');
 				}
@@ -181,18 +176,7 @@
 		 * @param {Object} dialog
 		 */
 		attachShadow:function(dialog) {
-			/*var shadow = $('div.shadow');
-			if(shadow.is(':hidden')) shadow.show();
-			shadow.css({
-				top: parseInt($(dialog)[0].style.top) - 2,
-				left: parseInt($(dialog)[0].style.left) - 4,
-				height: parseInt($(dialog).height()) + 8,
-				width: parseInt($(dialog).width()) + 8,
-				zIndex:parseInt($(dialog).css('zIndex')) - 1
-			});
-			$('.shadow_c', shadow).children().andSelf().each(function(){
-				$(this).css('height', $(dialog).outerHeight() - 4);
-			});*/
+			
 		},
 		_init:function(dialog, options) {
 			var op = $.extend({}, this._op, options);
@@ -234,22 +218,7 @@
 		 * @param {Object} options
 		 */
 		repaint:function(target,options){
-			/*var shadow = $('div.shadow');
-			if(target != 'w' && target != 'e') {
-				shadow.css('height', shadow.outerHeight() + options.tmove);
-				$('.shadow_c', shadow).children().andSelf().each(function(){
-					$(this).css('height', $(this).outerHeight() + options.tmove);
-				});
-			}
-			if(target == 'n' || target =='nw' || target == 'ne') {
-				shadow.css('top', options.otop - 2);
-			}
-			if(options.owidth && (target != 'n' || target != 's')) {
-				shadow.css('width', options.owidth + 8);
-			}
-			if(target.indexOf('w') >= 0) {
-				shadow.css('left', options.oleft - 4);
-			}*/
+			
 		},
 		/**
 		 * 改变左右拖动层的高度
@@ -377,6 +346,15 @@
 			$('.pageContent', dialog).css('width', (width-12) + 'px');
 			
 			$(window).trigger(DWZ.eventType.resizeGrid);
-		}
+		},
+		/* K'naan@2014-08-19 添加：为$.pdialog注册自定义事件 */
+	    registerEvent: function(eventName, event) {
+	        if ($.isFunction(event)) {
+	            if ($.inArray(eventName, this._eventNames) == -1) {
+	                this._eventNames.push(eventName);
+	                this._events.push(event);
+	            }
+	        }
+	    }
 	};
 })(jQuery);
