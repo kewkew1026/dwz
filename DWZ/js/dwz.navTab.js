@@ -42,30 +42,16 @@ var navTab = {
 		
 		this._init();
 		this._ctrlScrollBut();
-		/*K'naan@2014-08-19 注册自定义事件*/
-		if (options && options.registerEvents) {
-		    this._registerEvents = options.registerEvents;
-		}
-		 
 	},
 	_init: function(){
 		var $this = this;
 		this._getTabs().each(function(iTabIndex){
-		    var $tab = $(this);
 			$(this).unbind("click").click(function(event){
 				$this._switchTab(iTabIndex);
 			});
 			$(this).find(navTab._op.close$).unbind("click").click(function(){
 				$this._closeTab(iTabIndex);
 			});
-			//
-			if ($this._registerEvents) {
-			    $.each($this._registerEvents, function(i, n) {
-			        //if ($tab.isBind())
-			        console.log('name:'+ i +'-val:'+ n);
-			        //if ($tab.isBind())
-			    });
-			}
 		});
 		this._getMoreLi().each(function(iTabIndex){
 			$(this).find(">a").unbind("click").click(function(event){
@@ -295,9 +281,6 @@ var navTab = {
 		if (flag && url) {
 			$tab.data("reloadFlag", null);
 			var $panel = this.getPanel($tab.attr("tabid"));
-			
-			/*K'naan@2014-08-18 添加：重载navTab时销毁bootstrap-select菜单,避免反复生成[主要针对selectpicker的data-container="body"的情况]*/
-            $panel.find('select.selectpicker').selectpicker('destroy');
 			
 			if ($tab.hasClass("external")){
 				navTab.openExternal(url, $panel);
