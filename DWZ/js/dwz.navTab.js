@@ -402,23 +402,25 @@ var navTab = {
 			var $tab = $tabs.filter(":last");
 			var $panel = this._getPanels().filter(":last");
 			
-			var $this = this;
-	        /*K'naan@2014-08-19 为Panel注册自定义事件*/
-	        if ($this._eventNames) {
-	            $.each($this._eventNames, function(i, n) {
-	                $panel.on(n, $this._events[i]);
-	            });
-	        }
-	        /*End*/
-			
 			if (op.external || url.isExternalUrl()) {
 				$tab.addClass("external");
 				navTab.openExternal(url, $panel);
 			} else {
 				$tab.removeClass("external");
+				var $this = this;
 				$panel.ajaxUrl({
 					type:"GET", url:url, data:op.data, callback:function(){
 						navTab._loadUrlCallback($panel);
+						/*K'naan@2014-08-19 为Panel注册自定义事件*/
+		                if ($this._eventNames) {
+		                    $.each($this._eventNames, function(i, n) {
+		                        var fn = $this._events[i];
+		                        $panel.on(n, function(e) {
+		                            fn.call(fn, e, $panel);
+		                        });
+		                    });
+		                }
+		                /*End*/
 					}
 				});
 			}

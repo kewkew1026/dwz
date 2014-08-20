@@ -197,8 +197,7 @@ var DWZ = {
 					    /*K'naan @ 2014-08-19 新增ajaxLoad前置事件*/
 					    var beforeLoad = $.Event(DWZ.eventType.beforeLoad);
 					    if (beforeLoad) {
-					        $this.trigger(beforeLoad, [$this]);
-					        //console.log($this.html());
+					        $this.trigger(beforeLoad);
 					    }
 					    /*End*/
 						$this.html(response).initUI();

@@ -76,15 +76,6 @@
 					$.pdialog.switchDialog(dialog);
 				});
 				
-	            /*K'naan@2014-08-19 为Panel注册自定义事件*/
-	            if (this._eventNames) {
-	                var $this = this;
-	                $.each(this._eventNames, function(i,n) {
-	                    dialog.on(n, ($this._events)[i]);
-	                });
-	            }
-	            /*End*/
-				
 				if(op.resizable)
 					dialog.jresize();
 				if(op.drawable)
@@ -133,22 +124,33 @@
 				$.pdialog._current = dialog;
 				$.pdialog.attachShadow(dialog);
 				//load data
-				var jDContent = $('.dialogContent',dialog);
+				var $this = this;
+				var jDContent = $('.dialogContent', dialog);
 				jDContent.loadUrl(url, {}, function(){
 					jDContent.find('[layoutH]').layoutH(jDContent);
-					$('.pageContent', dialog).width($(dialog).width()-10);
+					$('.pageContent', dialog).width(dialog.width() - 10);
 					$('button.btn-close', dialog).click(function(){
 						$.pdialog.close(dialog);
 						return false;
 					});
+					/*K'naan@2014-08-19 为Panel注册自定义事件*/
+	                if ($this._eventNames) {
+	                    $.each($this._eventNames, function(i, n) {
+	                        var fn = ($this._events)[i];
+	                        dialog.on(n, function(e) {
+	                            fn.call(fn, e, dialog);
+	                        });
+	                    });
+	                }
+	                /*End*/
 				});
 			}
 			if (op.mask) {
                 $('body').append(DWZ.frag['dwzDialogMask']);
                 var mask = $('>.dialogBackground:last-child', 'body');
                 mask.css('zIndex', $.pdialog._zIndex - 1).attr('id', 'mask-'+ dlgid);
-				$('a.minimize',dialog).hide();
-				$(dialog).data('mask', true);
+				$('a.minimize', dialog).hide();
+				dialog.data('mask', true);
                 mask.show();
 			}else {
 				//add a task to task bar
@@ -166,7 +168,6 @@
 				var cindex = $($.pdialog._current).css('zIndex');
 				$($.pdialog._current).css('zIndex', index);
 				$(dialog).css('zIndex', cindex);
-				//$('div.shadow').css('zIndex', cindex - 1);
 				$.pdialog._current = dialog;
 			}
 			$.taskBar.switchTask(dialog.data('id'));
@@ -278,7 +279,6 @@
 			}
 			
 			$(dialog).hide();
-			//$('div.shadow').hide();
 			if ($(dialog).data('mask')) {
                 $('#mask-'+ $(dialog).data('id')).remove();
 			} else {
