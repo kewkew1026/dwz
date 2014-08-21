@@ -659,19 +659,21 @@ function initUI(_box){
             var offsetBot  = $(window).height() - treeHeight - top - h;
             var maxHeight  = $(window).height() - top - h;
             if (height == 'auto' && offsetBot < 0) maxHeight = maxHeight + offsetBot;
-            $box.css({top:(top + h), left:left, 'max-height':maxHeight}).show();
+            $box.css({top:(top + h), left:left, 'max-height':maxHeight});
         };
         $this.click(function() {
             if ($box && $box.length) {
                 setPosition($box);
+                $box.show();
                 return;
             }
             $box  = $('<div id="'+ treeid +'_select_box" class="tree-box"></div>')
                         .css({position:'absolute', 'z-index':2, 'min-width':width, height:height, overflow:'auto', background:'#FAFAFA', border:'1px #EEE solid'})
                         .hide()
                         .appendTo($('body'));
-            $tree.appendTo($box).css('width','100%').removeClass('hide').show();
+            $tree.appendTo($box).css('width','100%').data('fromObj', $this).removeClass('hide').show();
             setPosition($box);
+            $box.show();
         });
         $('body').on('mousedown', function(e) {
             var $target = $(e.target);
