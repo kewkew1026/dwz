@@ -15,7 +15,7 @@ var DWZ = {
 	eventType: {
 		pageClear:"pageClear",	// 用于重新ajaxLoad、关闭nabTab, 关闭dialog时，去除xheditor等需要特殊处理的资源
 		resizeGrid:"resizeGrid",	// 用于窗口或dialog大小调整
-		beforeLoad:'beforeLoad.b-jui' //K'naan@2014-08-18 添加销毁bootstrap-select菜单,避免反复生成[主要针对selectpicker的data-container="body"的情况]
+		destorySelectzTree:'destory.selectzTree.b-jui' //K'naan@2014-08-21 添加：从body中销毁弹出选择的zTree
 	},
 	isOverAxis: function(x, reference, size) {
 		//Determines when x coordinate is over "b" element axis
@@ -157,10 +157,20 @@ var DWZ = {
 		var _doc = $(document);
 		if (!_doc.isBind(DWZ.eventType.pageClear)) {
 			_doc.bind(DWZ.eventType.pageClear, function(event){
-				var box = event.target;
+				var $box = $(event.target);
 				if ($.fn.xheditor) {
-					$("textarea.editor", box).xheditor(false);
+					$("textarea.editor", $box).xheditor(false);
 				}
+				/**
+                 * K'naan@2014-08-21
+                 * 从body销毁bootstrap-select菜单,避免反复生成 针对selectpicker的data-container="body"的情况
+                 * 销毁弹出选择的zTree
+                 */ 
+                $box.find('select.selectpicker').selectpicker('destroyMenu');
+                var destorySelectzTree = $.Event(DWZ.eventType.destorySelectzTree);
+                if (destorySelectzTree && destorySelectzTree.type) {
+                    $box.find('.j-selectzTree').trigger(DWZ.eventType.destorySelectzTree); 
+                }
 			});
 		}
 	}
@@ -194,12 +204,6 @@ var DWZ = {
 					if (json[DWZ.keys.statusCode]==DWZ.statusCode.error){
 						if (json[DWZ.keys.message]) alertMsg.error(json[DWZ.keys.message]);
 					} else {
-					    /*K'naan @ 2014-08-19 新增ajaxLoad前置事件*/
-					    var beforeLoad = $.Event(DWZ.eventType.beforeLoad);
-					    if (beforeLoad) {
-					        $this.trigger(beforeLoad);
-					    }
-					    /*End*/
 						$this.html(response).initUI();
 						if ($.isFunction(op.callback)) op.callback(response);
 					}

@@ -11,8 +11,6 @@ var navTab = {
 	_moreBut:null,
 	_moreBox:null,
 	_currentIndex: 0,
-	_eventNames:[], //K'naan@2014-08-19 添加 自定义注册事件
-	_events:[], //K'naan@2014-08-19 添加 自定义注册事件
 	
 	_op: {id:"navTab", stTabBox:".navTab-tab", stPanelBox:".navTab-panel", mainTabId:"main", close$:"span.close", prevClass:"tabsLeft", nextClass:"tabsRight", stMore:".tabsMore", stMoreLi:"ul.tabsMoreList"},
 	
@@ -411,16 +409,6 @@ var navTab = {
 				$panel.ajaxUrl({
 					type:"GET", url:url, data:op.data, callback:function(){
 						navTab._loadUrlCallback($panel);
-						/*K'naan@2014-08-19 为Panel注册自定义事件*/
-		                if ($this._eventNames) {
-		                    $.each($this._eventNames, function(i, n) {
-		                        var fn = $this._events[i];
-		                        $panel.on(n, function(e) {
-		                            fn.call(fn, e, $panel);
-		                        });
-		                    });
-		                }
-		                /*End*/
 					}
 				});
 			}
@@ -442,15 +430,5 @@ var navTab = {
 		this._scrollCurrent();
 		
 		this._getTabs().eq(this._currentIndex).attr("url", url);
-	},
-	/* K'naan@2014-08-19 添加：为navTab注册自定义事件 */
-	registerEvent: function(eventName, event) {
-	    if ($.isFunction(event)) {
-    	    if ($.inArray(eventName, this._eventNames) == -1) {
-    	        this._eventNames.push(eventName);
-    	        this._events.push(event);
-    	    }
-	    }
 	}
-	
 };

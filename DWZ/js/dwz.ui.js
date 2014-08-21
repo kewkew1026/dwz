@@ -30,19 +30,6 @@ function initEnv() {
     
     if ($.taskBar) $.taskBar.init();
     navTab.init();
-    //K'naan@2014-08-19 为navTab注册自定义事件[销毁bootstrap-select菜单,避免反复生成[主要针对selectpicker的data-container="body"的情况]]
-    navTab.registerEvent('beforeLoad.b-jui', function(e, $panel) {
-        if ($panel && $panel.length) {
-            $panel.find('select.selectpicker').selectpicker('destroyMenu');
-        }
-    });
-    //K'naan@2014-08-19 为dialog注册自定义事件
-    $.pdialog.registerEvent('beforeLoad.b-jui', function(e, $dialog) {
-        if ($dialog && $dialog.length) {
-            $dialog.find('select.selectpicker').selectpicker('destroyMenu');
-        }
-    });
-    
     if ($.fn.switchEnv) $("#switchEnvBox").switchEnv();
     if ($.fn.navMenu) $("#navMenu").navMenu();
         
@@ -652,6 +639,59 @@ function initUI(_box){
             }
         });
     }
+    //zTree弹出下拉选择器
+    $('.j-selectzTree', $p).each(function() {
+        var $this     = $(this);
+        var $tree     = $($this.data('tree')),
+            width     = $this.data('width') || $this.outerWidth(),
+            height    = $this.data('height') || 'auto',
+            w         = parseFloat($this.css('width')),
+            h         = $this.outerHeight();
+        if (!$tree || !$tree.length) return;
+        var treeid = $tree.attr('id');
+        var $box   = $('#'+ treeid +'_select_box');
+        var setPosition = function($box) {
+            var top  = $this.offset().top,
+                left = $this.offset().left;
+            var $clone     = $tree.clone().appendTo($('body'));
+            var treeHeight = $clone.outerHeight();
+            $clone.remove();
+            var offsetBot  = $(window).height() - treeHeight - top - h;
+            var maxHeight  = $(window).height() - top - h;
+            if (height == 'auto' && offsetBot < 0) maxHeight = maxHeight + offsetBot;
+            $box.css({top:(top + h), left:left, 'max-height':maxHeight}).show();
+        };
+        $this.click(function() {
+            if ($box && $box.length) {
+                setPosition($box);
+                return;
+            }
+            $box  = $('<div id="'+ treeid +'_select_box" class="tree-box"></div>')
+                        .css({position:'absolute', 'z-index':2, 'min-width':width, height:height, overflow:'auto', background:'#FAFAFA', border:'1px #EEE solid'})
+                        .hide()
+                        .appendTo($('body'));
+            $tree.appendTo($box).css('width','100%').removeClass('hide').show();
+            setPosition($box);
+        });
+        $('body').on('mousedown', function(e) {
+            var $target = $(e.target);
+            if (!($this[0] == e.target || ($box && $box.length > 0 && $target.closest('.tree-box').length > 0))) {
+                $box.hide();
+            }
+        });
+        var $scroll = $this.closest('[layoutH]');
+        if ($scroll && $scroll.length) {
+            $scroll.scroll(function() {
+                if ($box && $box.length) {
+                    setPosition($box);
+                }
+            });
+        }
+        /*销毁tree*/
+        $this.on('destory.selectzTree.b-jui', function() {
+            $box.remove();
+        });
+    });
     
     //bootstrap - select && 联动
     $('select.selectpicker', $p).selectpicker();

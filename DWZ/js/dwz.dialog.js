@@ -10,8 +10,6 @@
 		getCurrent:function(){
 			return this._current;
 		},
-		_eventNames:[], //K'naan@2014-08-19 添加 自定义注册事件名称
-	    _events:[], //K'naan@2014-08-19 添加 自定义注册事件方法
 		/*K'naan@2014-08-19 修改：整合刷新和重载入dialog*/
 		refresh:function(dialogId) {
 		    if (!dialogId) {
@@ -133,16 +131,6 @@
 						$.pdialog.close(dialog);
 						return false;
 					});
-					/*K'naan@2014-08-19 为Panel注册自定义事件*/
-	                if ($this._eventNames) {
-	                    $.each($this._eventNames, function(i, n) {
-	                        var fn = ($this._events)[i];
-	                        dialog.on(n, function(e) {
-	                            fn.call(fn, e, dialog);
-	                        });
-	                    });
-	                }
-	                /*End*/
 				});
 			}
 			if (op.mask) {
@@ -346,15 +334,6 @@
 			$('.pageContent', dialog).css('width', (width-12) + 'px');
 			
 			$(window).trigger(DWZ.eventType.resizeGrid);
-		},
-		/* K'naan@2014-08-19 添加：为$.pdialog注册自定义事件 */
-	    registerEvent: function(eventName, event) {
-	        if ($.isFunction(event)) {
-	            if ($.inArray(eventName, this._eventNames) == -1) {
-	                this._eventNames.push(eventName);
-	                this._events.push(event);
-	            }
-	        }
-	    }
+		}
 	};
 })(jQuery);
