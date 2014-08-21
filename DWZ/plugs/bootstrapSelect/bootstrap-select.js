@@ -415,12 +415,13 @@
             $(window).resize(function() {
                 getPlacement(that.$newElement);
             });
-            $(window).on('scroll', function() {
-                getPlacement(that.$newElement);
-            });
-            var $page = that.$element.closest('.pageFormContent');
+            var $page = that.$element.closest('[layoutH]');
             if ($page && $page.length) {
                 $page.on('scroll', function() {
+                    getPlacement(that.$newElement);
+                });
+            } else {
+                $(window).on('scroll', function() {
                     getPlacement(that.$newElement);
                 });
             }
