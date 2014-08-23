@@ -44,6 +44,7 @@ a:link {color: #285e8e;}
 var COOKIE_NAME = 'sys__username';
 $(function(){
 	//changeCode();
+	choose_bg();
 	if ($.cookie(COOKIE_NAME)){
 	    $("#j_username").val($.cookie(COOKIE_NAME));
 	    $("#j_password").focus();
