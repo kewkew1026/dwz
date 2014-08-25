@@ -273,7 +273,7 @@ var navTab = {
 			navTab.closeCurrentTab();
 		});
 	},
-	_reload: function($tab, flag) {
+	_reload: function($tab, flag, type) {
 		flag = flag || $tab.data("reloadFlag");
 		var url = $tab.attr("url");
 		if (flag && url) {
@@ -286,13 +286,13 @@ var navTab = {
 			    //获取pagerForm参数
                 var $pagerForm = $("#pagerForm", $panel);
                 var args = $pagerForm.size() > 0 ? $pagerForm.serializeArray() : {}
-				navTab._reloadTab($panel, {url:url, data:args});
+				navTab._reloadTab($panel, {type:(type || $pagerForm.attr('method') || 'GET'), url:url, data:args});
 			}
 		}
 	},
 	_reloadTab: function($panel, op) {
         $panel.ajaxUrl({
-            type:"POST", url:op.url, data:op.data, callback:function(response) {
+            type:(op.type || 'GET'), url:op.url, data:op.data, callback:function(response) {
                 navTab._loadUrlCallback($panel);
             }
         });
@@ -305,7 +305,7 @@ var navTab = {
 		}
 	},
 	reload: function(url, options) {
-		var op = $.extend({data:{}, navTabId:"", callback:null}, options);
+		var op = $.extend({type:'GET', data:{}, navTabId:'', callback:null}, options);
 		var $tab = op.navTabId ? this._getTab(op.navTabId) : this._getTabs().eq(this._currentIndex);
 		var $panel =  op.navTabId ? this.getPanel(op.navTabId) : this._getPanels().eq(this._currentIndex);
 		
@@ -333,7 +333,7 @@ var navTab = {
                             op.data = pageParams;
                         }
 					}
-					navTab._reloadTab($panel, {url:url, data:op.data});
+					navTab._reloadTab($panel, {type:op.type, url:url, data:op.data});
 				}
 			}
 		}
@@ -356,7 +356,7 @@ var navTab = {
 	 * @param {Object} params: title, data, fresh
 	 */
 	openTab: function(tabid, url, options) { //if found tabid replace tab, else create a new tab.
-		var op = $.extend({title:"New Tab", data:{}, fresh:true, external:false}, options);
+		var op = $.extend({title:"New Tab", type:"GET", data:{}, fresh:true, external:false}, options);
 
 		var iOpenIndex = this._indexTabId(tabid);
 
@@ -369,10 +369,10 @@ var navTab = {
 			    //K'naan@2014-08-11 打开重复navTab时的确认提示信息[适用于navTab编辑页等]
                 if (op.reloadtips) {
                     alertMsg.confirm(op.reloadtips, {
-                        okCall: navTab._reload($tab, true)
+                        okCall: navTab._reload($tab, true, op.type)
                     });
                 } else {
-                    navTab._reload($tab, true);
+                    navTab._reload($tab, true, op.type);
                 }
 			}
 			this._currentIndex = iOpenIndex;

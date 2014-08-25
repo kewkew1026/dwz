@@ -32,7 +32,7 @@
 		    var url = dialog.data('url');
             var jDContent = dialog.find('.dialogContent');
             jDContent.ajaxUrl({
-                type:'POST', url:url, data:options.data, callback:function(response) {
+                type:(options.type || 'GET'), url:url, data:options.data, callback:function(response) {
                     jDContent.find('[layoutH]').layoutH(jDContent);
                     $('.pageContent', dialog).width(dialog.width() - 14);
                     $(':button.btn-close', dialog).click(function(){

@@ -176,7 +176,7 @@ function dialogAjaxDone(json){
 function navTabSearch(form, navTabId){
 	var $form = $(form);
 	if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
-	navTab.reload($form.attr('action'), {data: $form.serializeArray(), navTabId:navTabId});
+	navTab.reload($form.attr('action'), {type:'POST', data: $form.serializeArray(), navTabId:navTabId});
 	return false;
 }
 /**
@@ -186,7 +186,7 @@ function navTabSearch(form, navTabId){
 function dialogSearch(form){
 	var $form = $(form);
 	if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
-	$.pdialog.reload($form.attr('action'), {data: $form.serializeArray()});
+	$.pdialog.reload($form.attr('action'), {type:'POST', data: $form.serializeArray()});
 	return false;
 }
 function dwzSearch(form, targetType){
