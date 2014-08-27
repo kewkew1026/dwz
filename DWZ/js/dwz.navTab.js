@@ -285,7 +285,7 @@ var navTab = {
 			} else {
 			    //获取pagerForm参数
                 var $pagerForm = $("#pagerForm", $panel);
-                var args = $pagerForm.size() > 0 ? $pagerForm.serializeArray() : {}
+                var args = $pagerForm.size() > 0 ? $pagerForm.serializeArray() : {};
 				navTab._reloadTab($panel, {type:(type || $pagerForm.attr('method') || 'GET'), url:url, data:args});
 			}
 		}
@@ -363,16 +363,24 @@ var navTab = {
 		if (iOpenIndex >= 0) {
 			var $tab = this._getTabs().eq(iOpenIndex);
 			var span$ = $tab.attr("tabid") == this._op.mainTabId ? "> span > span" : "> span";
-			$tab.find(">a").attr("title", op.title).find(span$).html(op.title);
+			var $panel = this._getPanels().eq(iOpenIndex);
 			if(op.fresh || $tab.attr("url") != url) {
 			    $tab.attr("url", url);
+			    var $pagerForm = $("#pagerForm", $panel);
+			    var type = options.type || $pagerForm.attr('method') || op.type;
+			    var _reload = function() {
+			        $tab.find(">a").attr("title", op.title).find(span$).html(op.title);
+                    navTab._reload($tab, true, type);
+			    };
 			    //K'naan@2014-08-11 打开重复navTab时的确认提示信息[适用于navTab编辑页等]
                 if (op.reloadtips) {
                     alertMsg.confirm(op.reloadtips, {
-                        okCall: navTab._reload($tab, true, op.type)
+                        okCall: function() {
+                            _reload();
+                        }
                     });
                 } else {
-                    navTab._reload($tab, true, op.type);
+                    _reload();
                 }
 			}
 			this._currentIndex = iOpenIndex;

@@ -119,7 +119,7 @@ function initUI(_box){
                 breakPoints:false, //断点续传
                 saveInfoLocal:true,
                 previewImg:true,//预览上传图片
-                previewLoadimg:'DWZ/Huploadify/images/loading.gif', //预览前的载入图标
+                previewLoadimg:'DWZ/plugs/Huploadify/images/loading.gif', //预览前的载入图标
                 dragDrop:true,
                 showUploadedSize:true,
                 removeTimeout:1000
