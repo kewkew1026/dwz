@@ -4,6 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
 <title>Bootstrap for DWZ富客户端框架</title>
+<meta name="Keywords" content="Bootstrap,DWZ,jquery,ui,前端,框架,开源,OSC,开源框架,knaan"/>
+<meta name="Description" content="Bootstrap for DWZ富客户端框架，基于DWZ富客户端框架修改。主要针对皮肤，编辑器，表单验证等方面进行了大量修改，引入了Bootstrap，Font Awesome，KindEditor，jquery.validationEngine，iCheck等众多开源项目。交流QQ群：232781006。"/> 
 <!-- bootstrap - css -->
 <link href="DWZ/themes/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 <!-- uploadify -->
@@ -31,7 +33,7 @@
 <!-- DWZ.min 分模块压缩版 -->
 <script src="DWZ/js/dwz.min.js"></script>
 <!-- 以下是DWZ的分模块未压缩版，建议开发调试阶段使用下面的版本 -->
-<!--
+<!-- 
 <script src="DWZ/js/dwz.core.js"></script>
 <script src="DWZ/js/dwz.util.date.js"></script>
 <script src="DWZ/js/dwz.drag.js"></script>
@@ -125,12 +127,12 @@ function MainMenuClick(event, treeId, treeNode) {
     <div id="layout">
         <div id="header">
             <div class="headerNav">
-                <a class="logo" href="/" target=_blank><img src="images/logo.png" height="50" />&nbsp;&nbsp;<img src="images/logo_bootstrap.png" height="50" /></a>
+                <div class="logo"><a href="http://www.xknaan.com/"><img src="images/logo.png" height="50" />&nbsp;&nbsp;<img src="images/logo_bootstrap.png" height="50" /></a></div>
                 <ul class="topnav">
                     <li>2014-07-23&nbsp;<span id="clock"></span></li>
                     <li>当前用户：admin</li>
                     <li><a href="changepwd.html" target="dialog" mask="true" rel="changepwd_page" width="400" height="260">修改密码</a></li>
-                    <li><a href="../" target="_blank">网站首页</a></li>
+                    <li><a href="http://www.xknaan.com/">网站首页</a></li>
                     <li><a href="http://www.j-ui.com" target="_blank">DWZ(J-UI)官网</a></li>
                     <li><a href="login.html">退出</a></li>
                 </ul>
@@ -201,7 +203,7 @@ function MainMenuClick(event, treeId, treeNode) {
                     <div class="page unitBox">
                         <div class="accountInfo">
                             <div style="padding: 0 15px; border-bottom: 1px #DDD solid;">
-                                <h4>Bootstrap for DWZ富客户端框架 　　<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=0047455f3845597286edd381d54076b1e10a45c0c735115f0ee74961f70880af"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="[B-JUI]Bootstrap4DWZ交流群" title="[B-JUI]Bootstrap4DWZ交流群" style="vertical-align:top;"></a></h4>
+                                <h4>Bootstrap for DWZ富客户端框架 　　<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=0047455f3845597286edd381d54076b1e10a45c0c735115f0ee74961f70880af"><img border="0" src="images/group.png" alt="[B-JUI]Bootstrap4DWZ交流群" title="[B-JUI]Bootstrap4DWZ交流群" style="vertical-align:top;"></a></h4>
                                 <hr style="margin: 12px 0 0px;">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -215,11 +217,13 @@ function MainMenuClick(event, treeId, treeNode) {
                                         <h5>QQ交流群：232781006</h5>
                                     </div>
                                 </div>
-                                <h5></h5>
                             </div>
                         </div>
                         <div class="pageFormContent" layoutH="100">
-                            <div style="width:100%; overflow: hidden;">
+                            <div style="position: absolute;top:10px;right:0;width:300px;">
+                                <iframe width="100%" height="550" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=2838273614&verifier=75a3b95b&dpc=1"></iframe>
+                            </div>
+                            <div style="margin-right:300px; overflow: hidden;">
                                 <div class="row" style="padding: 0 10px;">
                                     <div class="col-md-4">
                                         <div class="panel panel-default">

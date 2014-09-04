@@ -154,14 +154,12 @@ function M_NodeRemove(event, treeId, treeNode) {
 }
 //自定义DOM
 function M_AddDiyDom(treeId, treeNode) {
-    var aObj = $("#" + treeNode.tId + "_a");
-	if ($("#diyBtn_"+treeNode.id).length>0) return;
-	var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' > </span>"
-		+ "<button type='button' class='diyBtn1' id='diyBtn_" + treeNode.id
-		+ "' title='"+treeNode.name+"' onfocus='this.blur();'><i class='fa fa-plane'></i></button>";
+    var aObj = $('#' + treeNode.tId + '_a');
+	if ($('#diyBtn_'+ treeNode.id).length > 0) return;
+	var editStr = '<button type="button" class="diyBtn1" id="diyBtn_' + treeNode.id +'" title="'+ treeNode.name +'" onfocus="this.blur();"><i class="fa fa-plane"></i></button>';
 	aObj.append(editStr);
-	var btn = $("#diyBtn_"+treeNode.id);
-	if (btn) btn.bind("click", function(){alertMsg.info(treeNode.name +" 的飞机！");});
+	var btn = $('#diyBtn_'+treeNode.id);
+	if (btn) btn.bind('click', function(){alertMsg.info(treeNode.name +' 的飞机！');});
 }
 </script>
 <div class="pageContent">
@@ -199,7 +197,7 @@ function M_AddDiyDom(treeId, treeNode) {
                             </div>
                             <div class="form-group" style="padding-top: 8px; border-top: 1px #DDD solid;">
                                 <label class="control-label x85"></label>
-                                <button class="btn btn-edit btn-sm" onclick="M_Ts_Menu();">更新菜单</button>
+                                <button class="btn btn-green btn-sm" onclick="M_Ts_Menu();">更新菜单</button>
                             </div>
                         </div>
                     </div>

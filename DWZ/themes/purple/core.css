@@ -90,7 +90,10 @@ fieldset{border-color:#958da1;}
 .pagination > .selected > a:focus,
 .pagination > .selected > span:focus{z-index:2; color:#ffffff; cursor:default; background-color:#9b87ba; border-color:#e5e3e9;}
 .table > thead > tr > th{font-weight:bold; color:#563d7c; background:#f7f5fa; border-bottom-color:#563d7c;}
-.table > thead > tr > th.orderby:hover{background:#e5e3e9 !important;}
+.table > thead > tr > th.orderby a.order:hover{background:#e5e3e9 !important;}
+.table th.orderby a.order:hover span{color:#563d7c;}
+.table th.orderby.asc a.order span.up{color:#563d7c;}
+.table th.orderby.desc a.order span.down{color:#563d7c;}
 .grid .resizeMarker, .grid .resizeProxy{background:#9b87ba;}
 /* Table */
 .table > thead > tr > th{background:#f7f5fa; border-bottom-color:#563d7c;}
@@ -171,6 +174,10 @@ fieldset{border-color:#958da1;}
 .iradio_minimal-purple{background-position:-100px 0;} .iradio_minimal-purple.hover{background-position:-120px 0;} .iradio_minimal-purple.checked{background-position:-140px 0;} .iradio_minimal-purple.disabled{background-position:-160px 0; cursor:default;} .iradio_minimal-purple.checked.disabled{background-position:-180px 0;}
 /* Retina support */
 @media only screen and (-webkit-min-device-pixel-ratio:1.5), only screen and (-moz-min-device-pixel-ratio:1.5), only screen and (-o-min-device-pixel-ratio:1.5), only screen and (min-device-pixel-ratio:1.5){.icheckbox_minimal-purple, .iradio_minimal-purple{background-image:url(purple@2x.png); -webkit-background-size:200px 20px; background-size:200px 20px;}}
+/*zTree*/
+.ztree li a:hover{color:#c000ff;}
+span.tmpzTreeMove_arrow,.ztree .tree_add, .ztree .tree_del,
+.ztree li span.button{background-image:url(zTreeStandard.png);}
 .ztree li a.curSelectedNode{background-color:#e5e3e9; color:black; border:1px #563d7c solid;}
 .ztree li a.curSelectedNode_Edit{background-color:#e5e3e9; color:black; border:1px #563d7c solid;}
 .ztree li a.tmpTargetNode_inner{background-color:#e5e3e9; color:white; border:1px #563d7c solid;}

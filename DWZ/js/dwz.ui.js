@@ -59,17 +59,6 @@ function initUI(_box){
     
     //tables
     $("table.j-table", $p).jTable();
-    
-    //tables - orderField
-    $('table.table > thead', $p).find('th').each(function() {
-        var $this = $(this);
-        var html  = $this.text();
-        if ($this.hasClass('asc')) {
-            $this.html('<div class="gridCol">'+ html +'<i class="fa fa-chevron-up"></i></div>');
-        } else if ($this.hasClass('desc')) {
-            $this.html('<div class="gridCol">'+ html +'<i class="fa fa-chevron-down"></i></div>');
-        }
-    });
 
     //auto bind tabs
     $("div.tabs", $p).each(function(){
@@ -250,9 +239,9 @@ function initUI(_box){
     if ($.fn.pagerForm) $("form[rel=pagerForm]", $p).pagerForm({parentBox:$p});
     
     // 执行第三方jQuery插件【 第三方jQuery插件注册：DWZ.regPlugins.push(function($p){}); 】
-	$.each(DWZ.regPlugins, function(index, fn){
-		fn($p);
-	});
+    $.each(DWZ.regPlugins, function(index, fn){
+        fn($p);
+    });
     
     //--------------------------------以下为未注册的插件---------------------------------
     //accordion
@@ -323,14 +312,14 @@ function initUI(_box){
     
     //根据input[text|password]、textarea的size或cols属性固定宽度(以适应不同浏览器)
     $(':text, :password, textarea', $p).each(function() {
-    	var $this = $(this);
-    	var $itemDetail = $this.closest('table.itemDetail');
-    	if (!$itemDetail.length) {
-	    	var size = $this.attr('size') || $this.attr('cols');
-	    	if (!size) return;
-	    	var width = size * 10;
-	    	if (width) $this.css('width', width);
-    	}
+        var $this = $(this);
+        var $itemDetail = $this.closest('table.itemDetail');
+        if (!$itemDetail.length) {
+            var size = $this.attr('size') || $this.attr('cols');
+            if (!size) return;
+            var width = size * 10;
+            if (width) $this.css('width', width);
+        }
     });
     
     //validate form
@@ -575,43 +564,43 @@ function initUI(_box){
                 var $add = $("#diyBtn_add_"+ treeNode.id);
                 var $del = $("#diyBtn_del_"+ treeNode.id);
                 if (!$add.length) {
-	                if (level < maxAddLevel) {
-	                    $edit = $('<a href="javascript:;" class="tree_add" id="diyBtn_add_'+ treeNode.id +'" title="添加"><i class="fa fa-plus"></i></a>');
-	                    $edit.appendTo($obj);
-		                $edit.on("click", function(){
-		                    zTree.addNodes(treeNode, {name:"新增Item"});
-		                });
-	                }
+                    if (level < maxAddLevel) {
+                        $edit = $('<a href="javascript:;" class="tree_add" id="diyBtn_add_'+ treeNode.id +'" title="添加"></a>');
+                        $edit.appendTo($obj);
+                        $edit.on("click", function(){
+                            zTree.addNodes(treeNode, {name:"新增Item"});
+                        });
+                    }
                 }
                 if (!$del.length) {
-                	var $del = $('<a href="javascript:;" class="tree_del" id="diyBtn_del_'+ treeNode.id +'" title="删除"><i class="fa fa-times"></i></a>');
-                	$del.appendTo($obj);
-	                $del.on("click", function(event) {
-	                    var delFn = function() {
-	                        alertMsg.confirm('确认要删除 '+ treeNode.name +' 吗？', {
-	                            okCall: function() {
-	                                zTree.removeNode(treeNode);
-	                                if (onRemove) {
-	                                    var fn = str2Func(onRemove);
-	                                    if (fn)
-	                                        fn.call(fn, event, treeId, treeNode);
-	                                }
-	                            },
-	                            cancelCall: function () {
-	                                return;
-	                            }
-	                        });
-	                    };
-	                    if (beforeRemove) {
-	                        var fn = str2Func(beforeRemove);
-	                        if (fn) {
-	                            var isdel = fn.call(fn, treeId, treeNode);
-	                            if (isdel && isdel == true) delFn();
-	                        }
-	                    } else {
-	                        delFn();
-	                    }
-	                });
+                    var $del = $('<a href="javascript:;" class="tree_del" id="diyBtn_del_'+ treeNode.id +'" title="删除"></a>');
+                    $del.appendTo($obj);
+                    $del.on("click", function(event) {
+                        var delFn = function() {
+                            alertMsg.confirm('确认要删除 '+ treeNode.name +' 吗？', {
+                                okCall: function() {
+                                    zTree.removeNode(treeNode);
+                                    if (onRemove) {
+                                        var fn = str2Func(onRemove);
+                                        if (fn)
+                                            fn.call(fn, event, treeId, treeNode);
+                                    }
+                                },
+                                cancelCall: function () {
+                                    return;
+                                }
+                            });
+                        };
+                        if (beforeRemove) {
+                            var fn = str2Func(beforeRemove);
+                            if (fn) {
+                                var isdel = fn.call(fn, treeId, treeNode);
+                                if (isdel && isdel == true) delFn();
+                            }
+                        } else {
+                            delFn();
+                        }
+                    });
                 }
             }
             //移除添加删除按钮
@@ -667,8 +656,13 @@ function initUI(_box){
                 $box.show();
                 return;
             }
+            var zindex = 2;
+            var dialog = $.pdialog.getCurrent();
+            if (dialog && dialog.length) {
+                zindex = dialog.css('zIndex') + 1;
+            }
             $box  = $('<div id="'+ treeid +'_select_box" class="tree-box"></div>')
-                        .css({position:'absolute', 'z-index':2, 'min-width':width, height:height, overflow:'auto', background:'#FAFAFA', border:'1px #EEE solid'})
+                        .css({position:'absolute', 'zIndex':zindex, 'min-width':width, height:height, overflow:'auto', background:'#FAFAFA', border:'1px #EEE solid'})
                         .hide()
                         .appendTo($('body'));
             $tree.appendTo($box).css('width','100%').data('fromObj', $this).removeClass('hide').show();
@@ -702,7 +696,7 @@ function initUI(_box){
         var $nextselect = $($this.data('nextselect'));
         var refurl      = $this.data('refurl');
         var _setEmpty   = function($select) {
-        	var $_nextselect = $($select.data('nextselect'));
+            var $_nextselect = $($select.data('nextselect'));
             if ($_nextselect && $_nextselect.length) {
                 var emptytxt = $_nextselect.data('emptytxt') || '&nbsp;';
                 $_nextselect.html('<option>'+ emptytxt +'</option>').selectpicker('refresh');
@@ -727,7 +721,7 @@ function initUI(_box){
                     if (!html) {
                         html = $nextselect.data('emptytxt') || '&nbsp;';
                         html = '<option>'+ html +'</option>';
-                	}
+                    }
                     $nextselect.html(html).selectpicker('refresh');
                     _setEmpty($nextselect);
                 },

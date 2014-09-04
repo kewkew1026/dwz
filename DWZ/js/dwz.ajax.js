@@ -10,31 +10,31 @@
  * @param {String} confirmMsg 提示确认信息
  */
 function validateCallback(form, callback, confirmMsg) {
-	var $form = $(form);
+    var $form = $(form);
 
-	/*if (!$form.validate()) {
-		return false;
-	}*/
-	
-	var _submitFn = function(){
-		$.ajax({
-			type: form.method || 'POST',
-			url:$form.attr("action"),
-			data:$form.serializeArray(),
-			dataType:"json",
-			cache: false,
-			success: callback || DWZ.ajaxDone,
-			error: DWZ.ajaxError
-		});
-	}
-	
-	if (confirmMsg) {
-		alertMsg.confirm(confirmMsg, {okCall: _submitFn});
-	} else {
-		_submitFn();
-	}
-	
-	return false;
+    /*if (!$form.validate()) {
+        return false;
+    }*/
+    
+    var _submitFn = function(){
+        $.ajax({
+            type: form.method || 'POST',
+            url:$form.attr("action"),
+            data:$form.serializeArray(),
+            dataType:"json",
+            cache: false,
+            success: callback || DWZ.ajaxDone,
+            error: DWZ.ajaxError
+        });
+    }
+    
+    if (confirmMsg) {
+        alertMsg.confirm(confirmMsg, {okCall: _submitFn});
+    } else {
+        _submitFn();
+    }
+    
+    return false;
 }
 /**
  * 带文件上传的ajax表单提交
@@ -42,59 +42,59 @@ function validateCallback(form, callback, confirmMsg) {
  * @param {Object} callback
  */
 function iframeCallback(form, callback){
-	var $form = $(form), $iframe = $("#callbackframe");
-	if(!$form.valid()) {return false;}
+    var $form = $(form), $iframe = $("#callbackframe");
+    if(!$form.valid()) {return false;}
 
-	if ($iframe.size() == 0) {
-		$iframe = $("<iframe id='callbackframe' name='callbackframe' src='about:blank' style='display:none'></iframe>").appendTo("body");
-	}
-	if(!form.ajax) {
-		$form.append('<input type="hidden" name="ajax" value="1" />');
-	}
-	form.target = "callbackframe";
-	
-	_iframeResponse($iframe[0], callback || DWZ.ajaxDone);
+    if ($iframe.size() == 0) {
+        $iframe = $("<iframe id='callbackframe' name='callbackframe' src='about:blank' style='display:none'></iframe>").appendTo("body");
+    }
+    if(!form.ajax) {
+        $form.append('<input type="hidden" name="ajax" value="1" />');
+    }
+    form.target = "callbackframe";
+    
+    _iframeResponse($iframe[0], callback || DWZ.ajaxDone);
 }
 function _iframeResponse(iframe, callback){
-	var $iframe = $(iframe), $document = $(document);
-	
-	$document.trigger("ajaxStart");
-	
-	$iframe.bind("load", function(event){
-		$iframe.unbind("load");
-		$document.trigger("ajaxStop");
-		
-		if (iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" || // For Safari
-			iframe.src == "javascript:'<html></html>';") { // For FF, IE
-			return;
-		}
+    var $iframe = $(iframe), $document = $(document);
+    
+    $document.trigger("ajaxStart");
+    
+    $iframe.bind("load", function(event){
+        $iframe.unbind("load");
+        $document.trigger("ajaxStop");
+        
+        if (iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" || // For Safari
+            iframe.src == "javascript:'<html></html>';") { // For FF, IE
+            return;
+        }
 
-		var doc = iframe.contentDocument || iframe.document;
+        var doc = iframe.contentDocument || iframe.document;
 
-		// fixing Opera 9.26,10.00
-		if (doc.readyState && doc.readyState != 'complete') return; 
-		// fixing Opera 9.64
-		if (doc.body && doc.body.innerHTML == "false") return;
-	   
-		var response;
-		
-		if (doc.XMLDocument) {
-			// response is a xml document Internet Explorer property
-			response = doc.XMLDocument;
-		} else if (doc.body){
-			try{
-				response = $iframe.contents().find("body").text();
-				response = jQuery.parseJSON(response);
-			} catch (e){ // response is html document or plain text
-				response = doc.body.innerHTML;
-			}
-		} else {
-			// response is a xml document
-			response = doc;
-		}
-		
-		callback(response);
-	});
+        // fixing Opera 9.26,10.00
+        if (doc.readyState && doc.readyState != 'complete') return; 
+        // fixing Opera 9.64
+        if (doc.body && doc.body.innerHTML == "false") return;
+       
+        var response;
+        
+        if (doc.XMLDocument) {
+            // response is a xml document Internet Explorer property
+            response = doc.XMLDocument;
+        } else if (doc.body){
+            try{
+                response = $iframe.contents().find("body").text();
+                response = jQuery.parseJSON(response);
+            } catch (e){ // response is html document or plain text
+                response = doc.body.innerHTML;
+            }
+        } else {
+            // response is a xml document
+            response = doc;
+        }
+        
+        callback(response);
+    });
 }
 
 /**
@@ -114,36 +114,36 @@ function _iframeResponse(iframe, callback){
  * 
  */
 function navTabAjaxDone(json){
-	DWZ.ajaxDone(json);
-	if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
-		if (json.navTabId){ //把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的
-			navTab.reloadFlag(json.navTabId);
-		} else { //重新载入当前navTab页面
-			var $pagerForm = $("#pagerForm", navTab.getCurrentPanel());
-			var args = $pagerForm.size()>0 ? $pagerForm.serializeArray() : {}
-			navTabPageBreak(args, json.rel);
-		}
-		
-		if ("closeCurrent" == json.callbackType) {
-			setTimeout(function(){navTab.closeCurrentTab(json.navTabId);}, 100);
-		} else if ("forward" == json.callbackType) {
-			navTab.reload(json.forwardUrl);
-		} else if ("forwardConfirm" == json.callbackType) {
-			alertMsg.confirm(json.confirmMsg || DWZ.msg("forwardConfirmMsg"), {
-				okCall: function(){
-					navTab.reload(json.forwardUrl);
-				},
-				cancelCall: function(){
-					navTab.closeCurrentTab(json.navTabId);
-				}
-			});
-		} else {
-			navTab.getCurrentPanel().find(":input[initValue]").each(function(){
-				var initVal = $(this).attr("initValue");
-				$(this).val(initVal);
-			});
-		}
-	}
+    DWZ.ajaxDone(json);
+    if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
+        if (json.navTabId){ //把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的
+            navTab.reloadFlag(json.navTabId);
+        } else { //重新载入当前navTab页面
+            var $pagerForm = $("#pagerForm", navTab.getCurrentPanel());
+            var args = $pagerForm.size()>0 ? $pagerForm.serializeArray() : {}
+            navTabPageBreak(args, json.rel);
+        }
+        
+        if ("closeCurrent" == json.callbackType) {
+            setTimeout(function(){navTab.closeCurrentTab(json.navTabId);}, 100);
+        } else if ("forward" == json.callbackType) {
+            navTab.reload(json.forwardUrl);
+        } else if ("forwardConfirm" == json.callbackType) {
+            alertMsg.confirm(json.confirmMsg || DWZ.msg("forwardConfirmMsg"), {
+                okCall: function(){
+                    navTab.reload(json.forwardUrl);
+                },
+                cancelCall: function(){
+                    navTab.closeCurrentTab(json.navTabId);
+                }
+            });
+        } else {
+            navTab.getCurrentPanel().find(":input[initValue]").each(function(){
+                var initVal = $(this).attr("initValue");
+                $(this).val(initVal);
+            });
+        }
+    }
 }
 
 /**
@@ -154,19 +154,19 @@ function navTabAjaxDone(json){
  * form提交后返回json数据结构,json格式和navTabAjaxDone一致
  */
 function dialogAjaxDone(json){
-	DWZ.ajaxDone(json);
-	if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
-		if (json.navTabId){
-			navTab.reload(json.forwardUrl, {navTabId: json.navTabId});
-		} else {
-			var $pagerForm = $("#pagerForm", navTab.getCurrentPanel());
-			var args = $pagerForm.size()>0 ? $pagerForm.serializeArray() : {}
-			navTabPageBreak(args, json.rel);
-		}
-		if ("closeCurrent" == json.callbackType) {
-			$.pdialog.closeCurrent();
-		}
-	}
+    DWZ.ajaxDone(json);
+    if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
+        if (json.navTabId){
+            navTab.reload(json.forwardUrl, {navTabId: json.navTabId});
+        } else {
+            var $pagerForm = $("#pagerForm", navTab.getCurrentPanel());
+            var args = $pagerForm.size()>0 ? $pagerForm.serializeArray() : {}
+            navTabPageBreak(args, json.rel);
+        }
+        if ("closeCurrent" == json.callbackType) {
+            $.pdialog.closeCurrent();
+        }
+    }
 }
 
 /**
@@ -174,42 +174,42 @@ function dialogAjaxDone(json){
  * @param {Object} form
  */
 function navTabSearch(form, navTabId){
-	var $form = $(form);
-	if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
-	navTab.reload($form.attr('action'), {type:'POST', data: $form.serializeArray(), navTabId:navTabId});
-	return false;
+    var $form = $(form);
+    if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
+    navTab.reload($form.attr('action'), {type:'POST', data: $form.serializeArray(), navTabId:navTabId});
+    return false;
 }
 /**
  * 处理dialog弹出层上的查询, 会重新载入当前dialog
  * @param {Object} form
  */
 function dialogSearch(form){
-	var $form = $(form);
-	if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
-	$.pdialog.reload($form.attr('action'), {type:'POST', data: $form.serializeArray()});
-	return false;
+    var $form = $(form);
+    if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
+    $.pdialog.reload($form.attr('action'), {type:'POST', data: $form.serializeArray()});
+    return false;
 }
 function dwzSearch(form, targetType){
-	if (targetType == "dialog") dialogSearch(form);
-	else navTabSearch(form);
-	return false;
+    if (targetType == "dialog") dialogSearch(form);
+    else navTabSearch(form);
+    return false;
 }
 /**
  * 处理div上的局部查询, 会重新载入指定div
  * @param {Object} form
  */
 function divSearch(form, rel){
-	var $form = $(form);
-	if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
-	if (rel) {
-		var $box = $("#" + rel);
-		$box.ajaxUrl({
-			type:"POST", url:$form.attr("action"), data: $form.serializeArray(), callback:function(){
-				$box.find("[layoutH]").layoutH();
-			}
-		});
-	}
-	return false;
+    var $form = $(form);
+    if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
+    if (rel) {
+        var $box = $("#" + rel);
+        $box.ajaxUrl({
+            type:"POST", url:$form.attr("action"), data: $form.serializeArray(), callback:function(){
+                $box.find("[layoutH]").layoutH();
+            }
+        });
+    }
+    return false;
 }
 /**
  * 
@@ -217,16 +217,16 @@ function divSearch(form, rel){
  * @param String formId 分页表单选择器，非必填项默认值是 "pagerForm"
  */
 function _getPagerForm($parent, args) {
-	var form = $("#pagerForm", $parent).get(0);
+    var form = $("#pagerForm", $parent).get(0);
 
-	if (form) {
-		if (args["pageNum"]) form[DWZ.pageInfo.pageNum].value = args["pageNum"];
-		if (args["numPerPage"]) form[DWZ.pageInfo.numPerPage].value = args["numPerPage"];
-		if (args["orderField"]) form[DWZ.pageInfo.orderField].value = args["orderField"];
-		if (args["orderDirection"] && form[DWZ.pageInfo.orderDirection]) form[DWZ.pageInfo.orderDirection].value = args["orderDirection"];
-	}
-	
-	return form;
+    if (form) {
+        if (args["pageNum"]) form[DWZ.pageInfo.pageNum].value = args["pageNum"];
+        if (args["numPerPage"]) form[DWZ.pageInfo.numPerPage].value = args["numPerPage"];
+        if (args["orderField"]) form[DWZ.pageInfo.orderField].value = args["orderField"];
+        if (args["orderDirection"] && form[DWZ.pageInfo.orderDirection]) form[DWZ.pageInfo.orderDirection].value = args["orderDirection"];
+    }
+    
+    return form;
 }
 
 
@@ -238,29 +238,29 @@ function _getPagerForm($parent, args) {
  * callback: 加载完成回调函数
  */
 function dwzPageBreak(options){
-	var op = $.extend({ targetType:"navTab", rel:"", data:{pageNum:"", numPerPage:"", orderField:"", orderDirection:""}, callback:null}, options);
-	var $parent = op.targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+    var op = $.extend({ targetType:"navTab", rel:"", data:{pageNum:"", numPerPage:"", orderField:"", orderDirection:""}, callback:null}, options);
+    var $parent = op.targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
 
-	if (op.rel) {
-		var $box = $parent.find("#" + op.rel);
-		var form = _getPagerForm($box, op.data);
-		if (form) {
-			$box.ajaxUrl({
-				type:"POST", url:$(form).attr("action"), data: $(form).serializeArray(), callback:function(){
-					$box.find("[layoutH]").layoutH();
-				}
-			});
-		}
-	} else {
-		var form = _getPagerForm($parent, op.data);
-		var params = $(form).serializeArray();
-		
-		if (op.targetType == "dialog") {
-			if (form) $.pdialog.reload($(form).attr("action"), {data: params, callback: op.callback});
-		} else {
-			if (form) navTab.reload($(form).attr("action"), {data: params, callback: op.callback});
-		}
-	}
+    if (op.rel) {
+        var $box = $parent.find("#" + op.rel);
+        var form = _getPagerForm($box, op.data);
+        if (form) {
+            $box.ajaxUrl({
+                type:"POST", url:$(form).attr("action"), data: $(form).serializeArray(), callback:function(){
+                    $box.find("[layoutH]").layoutH();
+                }
+            });
+        }
+    } else {
+        var form = _getPagerForm($parent, op.data);
+        var params = $(form).serializeArray();
+        
+        if (op.targetType == "dialog") {
+            if (form) $.pdialog.reload($(form).attr("action"), {data: params, callback: op.callback});
+        } else {
+            if (form) navTab.reload($(form).attr("action"), {data: params, callback: op.callback});
+        }
+    }
 }
 /**
  * 处理navTab中的分页和排序
@@ -268,87 +268,87 @@ function dwzPageBreak(options){
  * @param rel： 可选 用于局部刷新div id号
  */
 function navTabPageBreak(args, rel){
-	dwzPageBreak({targetType:"navTab", rel:rel, data:args});
+    dwzPageBreak({targetType:"navTab", rel:rel, data:args});
 }
 /**
  * 处理dialog中的分页和排序
  * 参数同 navTabPageBreak 
  */
 function dialogPageBreak(args, rel){
-	dwzPageBreak({targetType:"dialog", rel:rel, data:args});
+    dwzPageBreak({targetType:"dialog", rel:rel, data:args});
 }
 
 
 function ajaxTodo(url, callback){
-	var $callback = callback || navTabAjaxDone;
-	if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
-	$.ajax({
-		type:'POST',
-		url:url,
-		dataType:"json",
-		cache: false,
-		success: $callback,
-		error: DWZ.ajaxError
-	});
+    var $callback = callback || navTabAjaxDone;
+    if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
+    $.ajax({
+        type:'POST',
+        url:url,
+        dataType:"json",
+        cache: false,
+        success: $callback,
+        error: DWZ.ajaxError
+    });
 }
 
 function ajaxPost(url, data, callback){
-	var $callback = callback || navTabAjaxDone;
-	if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
-	$.ajax({
-		type:'POST',
-		url:url,
+    var $callback = callback || navTabAjaxDone;
+    if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
+    $.ajax({
+        type:'POST',
+        url:url,
         data:data,
-		dataType:"json",
-		cache: false,
-		success: $callback,
-		error: DWZ.ajaxError
-	});
+        dataType:"json",
+        cache: false,
+        success: $callback,
+        error: DWZ.ajaxError
+    });
 }
 
 function ajaxPostNoWait(url, data, callback){
-	var $callback = callback || navTabAjaxDone;
-	if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
-	$.ajax({
-		type:'POST',
-		url:url,
-		global: false,
+    var $callback = callback || navTabAjaxDone;
+    if (! $.isFunction($callback)) $callback = eval('(' + callback + ')');
+    $.ajax({
+        type:'POST',
+        url:url,
+        global: false,
         data:data,
-		dataType:"json",
-		cache: false,
-		success: $callback,
-		error: DWZ.ajaxError
-	});
+        dataType:"json",
+        cache: false,
+        success: $callback,
+        error: DWZ.ajaxError
+    });
 }
 
 /**
- * http://www.uploadify.com/documentation/uploadify/onqueuecomplete/	
+ * http://www.uploadify.com/documentation/uploadify/onqueuecomplete/    
  */
 function uploadifyQueueComplete(queueData){
 
-	var msg = "The total number of files uploaded: "+queueData.uploadsSuccessful+"<br/>"
-		+ "The total number of errors while uploading: "+queueData.uploadsErrored+"<br/>"
-		+ "The total number of bytes uploaded: "+queueData.queueBytesUploaded+"<br/>"
-		+ "The average speed of all uploaded files: "+queueData.averageSpeed;
-	
-	if (queueData.uploadsErrored) {
-		alertMsg.error(msg);
-	} else {
-		alertMsg.correct(msg);
-	}
+    var msg = "The total number of files uploaded: "+queueData.uploadsSuccessful+"<br/>"
+        + "The total number of errors while uploading: "+queueData.uploadsErrored+"<br/>"
+        + "The total number of bytes uploaded: "+queueData.queueBytesUploaded+"<br/>"
+        + "The average speed of all uploaded files: "+queueData.averageSpeed;
+    
+    if (queueData.uploadsErrored) {
+        alertMsg.error(msg);
+    } else {
+        alertMsg.correct(msg);
+    }
 }
 /**
  * http://www.uploadify.com/documentation/uploadify/onuploadsuccess/
  */
 function uploadifySuccess(file, data, response){
-	alert(data)
+    alert(data)
 }
 
 /**
  * http://www.uploadify.com/documentation/uploadify/onuploaderror/
  */
 function uploadifyError(file, errorCode, errorMsg) {
-	alertMsg.error(errorCode+": "+errorMsg);
+    alertMsg.error(errorCode+": "+errorMsg);
 }
 
 
@@ -360,129 +360,129 @@ function uploadifyError(file, errorCode, errorMsg) {
  * @param {Object} errorObj
  */
 function uploadifyError(event, queueId, fileObj, errorObj){
-	alert("event:" + event + "\nqueueId:" + queueId + "\nfileObj.name:" 
-		+ fileObj.name + "\nerrorObj.type:" + errorObj.type + "\nerrorObj.info:" + errorObj.info);
+    alert("event:" + event + "\nqueueId:" + queueId + "\nfileObj.name:" 
+        + fileObj.name + "\nerrorObj.type:" + errorObj.type + "\nerrorObj.info:" + errorObj.info);
 }
 
 
 $.fn.extend({
-	ajaxTodo:function(){
-		return this.each(function(){
-			var $this = $(this);
-			$this.click(function(event){
-				var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
-				DWZ.debug(url);
-				if (!url.isFinishedTm()) {
-					alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
-					return false;
-				}
-				var title = $this.attr("title");
-				if (title) {
-					alertMsg.confirm(title, {
-						okCall: function(){
-							ajaxTodo(url, $this.attr("callback"));
-						}
-					});
-				} else {
-					ajaxTodo(url, $this.attr("callback"));
-				}
-				event.preventDefault();
-			});
-		});
-	},
-	dwzExport: function(){
-		function _doExport($this) {
-			var $p = $this.attr("targetType") == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
-			var $form = $("#pagerForm", $p);
-			var url = $this.attr("href");
-			window.location = url+(url.indexOf('?') == -1 ? "?" : "&")+$form.serialize();
-		}
-		
-		return this.each(function(){
-			var $this = $(this);
-			$this.click(function(event){
-				var title = $this.attr("title");
-				if (title) {
-					alertMsg.confirm(title, {
-						okCall: function(){_doExport($this);}
-					});
-				} else {_doExport($this);}
-			
-				event.preventDefault();
-			});
-		});
-	},
-	/* K'naan 添加 - 选中项导出 */
-	checkedExport: function() {
-		function _doCheckedExport($this) {
-			var $p = $this.attr('targetType') == 'dialog' ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
-			var url = $this.attr('href'),
-				idname = $this.attr('idname');
-			if (!idname) {
-				alertMsg.error('未定义选中项的id名称[复选框的name]！');
-				return;
-			}
-			var ids = [];
-			var $check = $(':checkbox[name='+ idname +']:checked', $p);
-			if ($check.length == 0) {
-				alertMsg.error('未选中任何一项！');
-				return;
-			}
-			var ids = [];
-			$check.each(function() {
-				ids.push($(this).val());
-			});
-			window.location = url + (url.indexOf('?') == -1 ? '?' : '&') + 'ids='+ ids.join(',');
-		}
-		return this.each(function(){
-			var $this = $(this);
-			$this.click(function(event){
-				var title = $this.attr('title');
-				if (title) {
-					alertMsg.confirm(title, {
-						okCall: function(){_doCheckedExport($this);}
-					});
-				} else {_doCheckedExport($this);}
-				event.preventDefault();
-			});
-		});
-	},
-	/* K'naan 添加 - 选中项 Ajax Post [用于批量删除等操作] */
-	checkedAjaxTodo:function(){
-		return this.each(function(){
-			var $this = $(this);
-			var $p = $this.attr('targetType') == 'dialog' ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
-			$this.click(function(event){
-				var url = $this.attr("href"),
-					idname = $this.attr('idname');
-				if (!idname) {
-					alertMsg.error('未定义选中项的id名称[复选框的name]！');
-					return false;
-				}
-				var ids = [];
-				var $check = $(':checkbox[name='+ idname +']:checked', $p);
-				if ($check.length == 0) {
-					alertMsg.error('未选中任何一项！');
-					return false;
-				}
-				var ids = [];
-				$check.each(function() {
-					ids.push($(this).val());
-				});
-				url = url + (url.indexOf('?') == -1 ? '?' : '&') + 'ids='+ ids.join(',');
-				var title = $this.attr("title");
-				if (title) {
-					alertMsg.confirm(title, {
-						okCall: function(){
-							ajaxTodo(url, $this.attr("callback"));
-						}
-					});
-				} else {
-					ajaxTodo(url, $this.attr("callback"));
-				}
-				event.preventDefault();
-			});
-		});
-	}
+    ajaxTodo:function(){
+        return this.each(function(){
+            var $this = $(this);
+            $this.click(function(event){
+                var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
+                DWZ.debug(url);
+                if (!url.isFinishedTm()) {
+                    alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
+                    return false;
+                }
+                var title = $this.attr("title");
+                if (title) {
+                    alertMsg.confirm(title, {
+                        okCall: function(){
+                            ajaxTodo(url, $this.attr("callback"));
+                        }
+                    });
+                } else {
+                    ajaxTodo(url, $this.attr("callback"));
+                }
+                event.preventDefault();
+            });
+        });
+    },
+    dwzExport: function(){
+        function _doExport($this) {
+            var $p = $this.attr("targetType") == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+            var $form = $("#pagerForm", $p);
+            var url = $this.attr("href");
+            window.location = url+(url.indexOf('?') == -1 ? "?" : "&")+$form.serialize();
+        }
+        
+        return this.each(function(){
+            var $this = $(this);
+            $this.click(function(event){
+                var title = $this.attr("title");
+                if (title) {
+                    alertMsg.confirm(title, {
+                        okCall: function(){_doExport($this);}
+                    });
+                } else {_doExport($this);}
+            
+                event.preventDefault();
+            });
+        });
+    },
+    /* K'naan 添加 - 选中项导出 */
+    checkedExport: function() {
+        function _doCheckedExport($this) {
+            var $p = $this.attr('targetType') == 'dialog' ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+            var url = $this.attr('href'),
+                idname = $this.attr('idname');
+            if (!idname) {
+                alertMsg.error('未定义选中项的id名称[复选框的name]！');
+                return;
+            }
+            var ids = [];
+            var $check = $(':checkbox[name='+ idname +']:checked', $p);
+            if ($check.length == 0) {
+                alertMsg.error('未选中任何一项！');
+                return;
+            }
+            var ids = [];
+            $check.each(function() {
+                ids.push($(this).val());
+            });
+            window.location = url + (url.indexOf('?') == -1 ? '?' : '&') + 'ids='+ ids.join(',');
+        }
+        return this.each(function(){
+            var $this = $(this);
+            $this.click(function(event){
+                var title = $this.attr('title');
+                if (title) {
+                    alertMsg.confirm(title, {
+                        okCall: function(){_doCheckedExport($this);}
+                    });
+                } else {_doCheckedExport($this);}
+                event.preventDefault();
+            });
+        });
+    },
+    /* K'naan 添加 - 选中项 Ajax Post [用于批量删除等操作] */
+    checkedAjaxTodo:function(){
+        return this.each(function(){
+            var $this = $(this);
+            var $p = $this.attr('targetType') == 'dialog' ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+            $this.click(function(event){
+                var url = $this.attr("href"),
+                    idname = $this.attr('idname');
+                if (!idname) {
+                    alertMsg.error('未定义选中项的id名称[复选框的name]！');
+                    return false;
+                }
+                var ids = [];
+                var $check = $(':checkbox[name='+ idname +']:checked', $p);
+                if ($check.length == 0) {
+                    alertMsg.error('未选中任何一项！');
+                    return false;
+                }
+                var ids = [];
+                $check.each(function() {
+                    ids.push($(this).val());
+                });
+                url = url + (url.indexOf('?') == -1 ? '?' : '&') + 'ids='+ ids.join(',');
+                var title = $this.attr("title");
+                if (title) {
+                    alertMsg.confirm(title, {
+                        okCall: function(){
+                            ajaxTodo(url, $this.attr("callback"));
+                        }
+                    });
+                } else {
+                    ajaxTodo(url, $this.attr("callback"));
+                }
+                event.preventDefault();
+            });
+        });
+    }
 });
 
