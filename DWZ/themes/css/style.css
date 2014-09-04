@@ -455,8 +455,8 @@ span.tmpzTreeMove_arrow,.ztree .tree_add, .ztree .tree_del,
 .ztree li span.button.chk.radio_true_part_focus{background-position:-61px -24px;}
 .ztree li span.button.chk.radio_true_disable{background-position:-61px -68px;}
 .ztree li span.button.switch{width:22px; height:22px;}
-.ztree li span.button.root_open{background-position:-92px -54px;}
-.ztree li span.button.root_close{background-position:-107px -54px;}
+.ztree li span.button.root_open{background-position:-194px -33px;}
+.ztree li span.button.root_close{background-position:-194px -1px;}
 .ztree li span.button.roots_open{background-position:-165px -1px;}
 .ztree li span.button.roots_close{background-position:-107px -1px;}
 .ztree li span.button.center_open{background-position:-165px -33px;}
@@ -479,7 +479,7 @@ span.tmpzTreeMove_arrow,.ztree .tree_add, .ztree .tree_del,
 .ztree li span.button.remove:hover{background-position:-265px -46px;}
 .ztree li span.button.ico_loading{margin-right:2px; background:url(./img/loading.gif) no-repeat scroll 0 0 transparent; vertical-align:middle;}
 ul.tmpTargetzTree{background-color:#e5e5e5; opacity:0.8; filter:alpha(opacity=80);}
-span.tmpzTreeMove_arrow{position:absolute; display:inline-block; padding:0; margin:2px 0 0 1px; width:30px; height:16px; border:0 none; background-color:transparent; background-repeat:no-repeat; background-attachment:scroll;background-position:-196px -81px;}
+span.tmpzTreeMove_arrow{position:absolute; display:inline-block; margin:2px 0 0 1px; padding:0; width:30px; height:20px; border:0 none; background-color:transparent; background-repeat:no-repeat; background-attachment:scroll; background-position:-196px -81px;}
 ul.ztree.zTreeDragUL{position:absolute; margin:0; padding:0; width:auto; height:auto; overflow:hidden; background-color:#cfcfcf; border:1px #929292 dotted; opacity:0.8; filter:alpha(opacity=80);}
 .zTreeMask{position:absolute; z-index:10000; background-color:#cfcfcf; opacity:0.0; filter:alpha(opacity=0);}
 .ztree .tree_add, .ztree .tree_del{display:inline-block; margin-left:2px; width:17px; height:17px; vertical-align:middle;}
@@ -487,6 +487,7 @@ ul.ztree.zTreeDragUL{position:absolute; margin:0; padding:0; width:auto; height:
 .ztree .tree_add:hover{background-position:-265px -4px;}
 .ztree .tree_del{ background-position:-286px -46px;}
 .ztree .tree_del:hover{ background-position:-265px -46px;}
+.ztree .diyBtn1{margin-left:2px;}
 /* ------------ plug - bootcss tag -------------- */
 /* bootcss - tag */
 .tags-control{position:relative; display:inline-block; padding-top:0px; width:auto; min-height:28px; background:#FFF; border:1px solid #CCCCCC; border-radius:2px; cursor:text;}
