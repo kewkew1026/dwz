@@ -48,7 +48,7 @@ fieldset{border-color:#958da1;}
 .tabsPage .tabsPageHeader{border-color:none;}
 .tabsPage .tabsPageHeader li a{color:#563d7c;}
 .tabsPage .tabsPageHeader li .close,
-.tabsPage .tabsPageHeader li.hover .close,
+.tabsPage .tabsPageHeader li:hover .close,
 .tabsPage .tabsPageHeader li.selected .close{background:none;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{background:none;}
 .tabsPage .tabsPageHeader .home_icon{background:none;}
@@ -72,13 +72,6 @@ fieldset{border-color:#958da1;}
 .dialog .pageTableContent{background-color:#fff; border:1px #958da1 solid;}
 /* Dialog Resizable */
 .resizable{border-color:#563d7c; background:#f7f5fa;}
-/* Accordion */
-.accordion .accordionHeader, .accordion .accordionHeader h2, .accordion .accordionHeader h2 span{color:#183152;}
-.accordion{background:#FFF; border-color:#563d7c;}
-.accordion .accordionHeader{border-bottom:1px #563d7c solid;}
-.accordion .accordionContent{border-color:#563d7c;}
-.accordion .accordionHeader{text-shadow:0 1px 0 #FFF; background-image:-webkit-linear-gradient(top, #f7f5fa 0%, #e5e3e9 100%); background-image:linear-gradient(to bottom, #f7f5fa 0%, #e5e3e9 100%); background-repeat:repeat-x; border-color:#aca7b5; border-color:#aca7b5; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff7f5fa', endColorstr='#ffe5e3e9', GradientType=0); filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);}
-.accordion .accordionHeader.hover{text-shadow:0 1px 0 #FFF; background-image:-webkit-linear-gradient(top, #e5e3e9 0%, #c7bbd8 100%); background-image:linear-gradient(to bottom, #e5e3e9 0%, #c7bbd8 100%); background-repeat:repeat-x; border-color:#aca7b5; border-color:#aca7b5; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5e3e9', endColorstr='#ffc7bbd8', GradientType=0); filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);}
 /* Grid */
 .panelBar{background:#f7f5fa; border-top:1px #563d7c solid;}
 .pagination > li > a {color:#c000ff;}
@@ -105,7 +98,7 @@ fieldset{border-color:#958da1;}
 #taskbar{background-image:-webkit-linear-gradient(top, #563d7c 0%, #333333 100%); background-image:linear-gradient(to bottom, #563d7c 0%, #333333 100%); background-repeat:repeat-x; border-color:#dbdbdb; border-color:#ccc; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff563d7c', endColorstr='#ff333333', GradientType=0); filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);}
 #taskbar li{background-image:-webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%); background-image:linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%); background-repeat:repeat-x; border-color:#dbdbdb; border-color:#ccc; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0); filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);}
 #taskbar li .taskbutton i{color:#563d7c;}
-#taskbar .hover{background:#f7f5fa;}
+#taskbar li:hover{background:#f7f5fa;}
 #taskbar .close{color:#9b87ba;}
 #taskbar .close:hover{color:#563d7c;}
 /* ProgressBar */
@@ -114,7 +107,7 @@ fieldset{border-color:#958da1;}
 /* rightMenu */
 #contextmenu ul{background-color:#fff; border:1px solid #999;}
 #contextmenu li{color:#563d7c; background-color:transparent; border:1px solid #fff;}
-#contextmenu li.hover{background-color:#f7f5fa; border:1px solid #927ab5;}
+#contextmenu li:hover{background-color:#f7f5fa; border:1px solid #927ab5;}
 #contextmenu li.disabled{color:#999;}
 #contextmenu li.disabled:hover{cursor:default;}
 /* calendar */

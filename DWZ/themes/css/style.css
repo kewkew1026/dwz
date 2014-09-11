@@ -214,9 +214,9 @@ label.x150{display:inline-block; width:150px; padding-right:5px;}
 .tabsPage .tabsPageHeaderMargin{margin:0 34px 0 17px;}
 .tabsPage .tabsMove{position:absolute; top:0; right:0; z-index:2; height:25px;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{position:absolute; z-index:2; display:block; width:19px; height:26px; overflow:hidden; cursor:pointer;}
-.tabsPage .tabsLeft{top:0; left:0;}
+.tabsPage .tabsLeft{top:0; left:0; display:none;}
 .tabsPage .tabsLeftDisabled{top:0; left:0; cursor:default;}
-.tabsPage .tabsRight{top:0; right:19px; text-indent:2px; border-right:none;}
+.tabsPage .tabsRight{top:0; right:19px; display:none; text-indent:2px; border-right:none;}
 .tabsPage .tabsRightDisabled{top:0; right:19px; cursor:default;}
 .tabsPage .tabsMore{top:0; right:0;}
 .tabsPage .tabsLeft i,
@@ -382,7 +382,7 @@ label.x150{display:inline-block; width:150px; padding-right:5px;}
 #contextmenu{position:absolute; z-index:500; left:0; top:0; display:none;}
 #contextmenu ul{margin:0; padding:1px; width:150px;}
 #contextmenu li{display:block; margin:0; padding:3px; text-align:left; cursor:default;}
-#contextmenu li.hover{cursor:pointer;}
+#contextmenu li:hover{font-weight:bold; cursor:pointer;}
 #contextmenuShadow{position:absolute; z-index:499; display:none; opacity:0.2; filter:alpha(opacity=20); background-color:#000;}
 /* calendar */
 #calendar{position:absolute; z-index:1001; display:none; margin:0; width:208px; border-radius:2px;}
