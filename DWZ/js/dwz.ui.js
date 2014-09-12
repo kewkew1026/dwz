@@ -98,7 +98,7 @@ function initUI(_box){
         $(":file[uploaderOption]", $p).each(function(){
             var $this = $(this);
             var options = {
-                swf:'DWZ/uploadify/scripts/uploadify.swf',
+                swf:'DWZ/plugins/uploadify/scripts/uploadify.swf',
                 fileObjName: $this.attr('name') || 'file',
                 auto: true,
                 multi: false,
@@ -108,7 +108,7 @@ function initUI(_box){
                 breakPoints:false, //断点续传
                 saveInfoLocal:true,
                 previewImg:true,//预览上传图片
-                previewLoadimg:'DWZ/plugs/Huploadify/images/loading.gif', //预览前的载入图标
+                previewLoadimg:'DWZ/plugins/Huploadify/images/loading.gif', //预览前的载入图标
                 dragDrop:true,
                 showUploadedSize:true,
                 removeTimeout:1000
@@ -483,7 +483,8 @@ function initUI(_box){
             afterSelectFile          : afterSelectFile,
             X_afterSelect            : X_afterSelect,
             htmlTags                 : htmlTags,
-            cssPath                  : 'DWZ/editor-content.css'
+            cssPath                  : 'DWZ/editor-content.css',
+            afterBlur                : function() {this.sync();}
         });
     });
     //Ztree
